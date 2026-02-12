@@ -1,3 +1,6 @@
+# CSCI-401-Task-Manager
+Capstone project for CSCI-401W Software Engineering. It is a full-stack web application designed to function similar to Apple Reminders.
+
 # React + Vite
 
 This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
