@@ -31,3 +31,6 @@ backend/.env
 *.njsproj
 *.sln
 *.sw?
+
+backend/.env
+.env
