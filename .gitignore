@@ -8,16 +8,17 @@ pnpm-debug.log*
 lerna-debug.log*
 
 # Frontend
-node_modules
-dist
+frontend/node_modules/
+node_modules/
+frontend/dist/
+dist/
 dist-ssr
 *.local
+frontend/.vite/
 
 # Backend
 backend/target/
 backend/src/main/resources/application-local.properties
-
-# Env files
 .env
 backend/.env
 
