@@ -1,8 +1,10 @@
 import { Routes, Route } from "react-router-dom";
 import Login from "./pages/Login";
-import Dashboard from "./pages/Dashboard";
-import Layout from "./pages/Layout";
 import ProtectedRoute from "./components/ProtectedRoute";
+import Layout from "./pages/Layout";
+import Dashboard from "./pages/Dashboard";
+import Tasks from "./pages/Tasks";
+import Projects from "./pages/Projects";
 
 function App() {
   return (
@@ -18,7 +20,9 @@ function App() {
         </ProtectedRoute>
       }
       >
-        <Route index element={<Dashboard />} />
+        <Route index element={<Dashboard />} /> 
+        <Route path="tasks" element={<Tasks />} />
+        <Route path="projects" element={<Projects />} />
       </Route>
     </Routes>
   );
