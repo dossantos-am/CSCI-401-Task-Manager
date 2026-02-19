@@ -1,8 +1,14 @@
+import { useContext } from "react";
+import { AuthContext } from "../context/AuthContext";
+
 const Dashboard = () => {
+  const { user } = useContext(AuthContext);
+
   return (
-    <div style={{ padding: "20px" }}>
-      <h1>Dashboard</h1>
-      <button>Create Project</button>
+    <div>
+      <h1 className="text-2xl font-bold">
+        Welcome to your Dashboard {user.name}!
+      </h1>
     </div>
   );
 };
