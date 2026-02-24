@@ -1,26 +1,24 @@
+import Sidebar from "../components/Sidebar";
 import { Outlet } from "react-router-dom";
-import { useContext, useState } from "react";
-import { AuthContext } from "../context/AuthContext";
-//import CreateProjectModal from "../components/CreateProjectModal";
+import NavBar from "../components/NavBar";
 
 const Layout = () => {
-  const { user, logout } = useContext(AuthContext);
-  //const [showModal, setShowModal] = useState(false);
-
   return (
-    <div style={{ padding: "20px" }}>
-      <header style={{ display: "flex", justifyContent: "space-between" }}>
-        <h2>Welcome, {user.name}</h2>
-        <button onClick={logout}>Logout</button>
-      </header>
-
-      <button onClick={null}>New Project</button>
-
+    <div className="flex h-screen bg-gray-100">
       
+      <Sidebar />
 
-      <Outlet />
+      <div className="flex flex-col flex-1">
+        <NavBar />
+
+        <div className="p-6">
+          <Outlet />
+        </div>
+      </div>
+
     </div>
   );
 };
+
 
 export default Layout;
