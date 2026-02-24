@@ -1,19 +1,99 @@
 # CSCI-401-Task-Manager
-Capstone project for CSCI-401W Software Engineering. It is a full-stack web application designed to function similar to Apple Reminders.
 
-# React + Vite
+Capstone project for **CSCI-401W Software Engineering**.  
+This is a full-stack web application designed to function similarly to Apple Reminders.
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+---
 
-Currently, two official plugins are available:
+## Frontend Setup
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Babel](https://babeljs.io/) (or [oxc](https://oxc.rs) when used in [rolldown-vite](https://vite.dev/guide/rolldown)) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+The frontend is built with React (Vite).
 
-## React Compiler
+### 1. Navigate to the frontend folder
 
-The React Compiler is not enabled on this template because of its impact on dev & build performances. To add it, see [this documentation](https://react.dev/learn/react-compiler/installation).
+```bash
+cd frontend
+```
 
-## Expanding the ESLint configuration
+### 2. Install dependencies
 
-If you are developing a production application, we recommend using TypeScript with type-aware lint rules enabled. Check out the [TS template](https://github.com/vitejs/vite/tree/main/packages/create-vite/template-react-ts) for information on how to integrate TypeScript and [`typescript-eslint`](https://typescript-eslint.io) in your project.
+```bash
+npm install
+```
+
+### 3. Start the development server
+
+```bash
+npm run dev
+```
+
+---
+
+## Backend Setup
+
+The backend is built with Spring Boot and uses PostgreSQL (Neon) with Flyway for database migrations.
+
+### 1. Navigate to the backend folder
+
+```bash
+cd backend
+```
+
+### 2. Create your environment file
+
+Copy the example file:
+
+```bash
+cp .env.example .env
+```
+
+Open `.env` and replace the placeholder with your Neon JDBC connection string:
+
+```
+DB_URL=jdbc:postgresql://username:password@your-neon-host.neon.tech/your-database?sslmode=require&channelBinding=require
+```
+
+You can find this in the Neon dashboard:
+
+Project → Branch → Connect → Java (this is an option in the dropdown menu above the snippet window. Defualt is Connection string)
+
+### 3. Run the backend
+
+```bash
+./mvnw clean spring-boot:run
+```
+
+---
+
+## Database Migrations
+
+We use **Flyway** to manage database schema changes.
+
+Migration files are located in:
+
+```
+backend/src/main/resources/db/migration
+```
+
+Migration naming format:
+
+```
+V1__init.sql
+V2__add_tasks_table.sql
+V3__update_constraints.sql
+```
+
+## Important:
+
+- Do NOT modify old migration files after they have been applied.
+- Always create a new migration file for schema changes.
+- Flyway automatically applies pending migrations on application startup.
+
+---
+
+## Security Notes
+
+- The `.env` file is ignored by Git (.gitignore) and must NOT be committed.
+- Only `.env.example` is committed to the repository.
+- in application.properties: spring.datasource.url=${DB_URL} will reference your .env file's credentials. This is the DB_URL string found in the Neon console.
+- Never commit real database credentials.
