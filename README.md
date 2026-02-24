@@ -45,7 +45,7 @@ Copy the example file:
 cp .env.example .env
 ```
 
-Open `.env` and replace the placeholder with your Neon JDBC connection string:
+Open `.env` and replace the placeholder with your Neon Java connection string:
 
 ```
 DB_URL=jdbc:postgresql://username:password@your-neon-host.neon.tech/your-database?sslmode=require&channelBinding=require
