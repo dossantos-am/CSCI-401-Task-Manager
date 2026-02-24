@@ -1,6 +1,4 @@
-# CSCI-401-Task-Manager
-
-Capstone project for **CSCI-401W Software Engineering**.  
+# Capstone project for **CSCI-401W Software Engineering**.  
 This is a full-stack web application designed to function similarly to Apple Reminders.
 
 ---
