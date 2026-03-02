@@ -1,20 +1,20 @@
 export const dummyUsers = [
   {
-    id: "user_1",
+    userId: 1,
     name: "Alex Smith",
-    email: "alexsmith@example.com",
-    password: "1234"
+    emailAddress: "alexsmith@example.com",
+    hashedPassword: "1234"
   },
   {
-    id: "user_2",
+    userId: 2,
     name: "John Warrel",
-    email: "johnwarrel@example.com",
-    password: "1234"
+    emailAddress: "johnwarrel@example.com",
+    hashedPassword: "1234"
   },
   {
-    id: "user_3",
+    userId: 3,
     name: "Oliver Watts",
-    email: "oliverwatts@example.com",
-    password: "1234"
+    emailAddress: "oliverwatts@example.com",
+    hashedPassword: "1234"
   }
 ];

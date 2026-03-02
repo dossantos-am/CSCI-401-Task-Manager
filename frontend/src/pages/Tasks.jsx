@@ -1,7 +1,7 @@
 import { dummyProjects } from "../assets/dummyProjects";
 
 const Tasks = () => {
-  const projects = dummyProjects?.[0]?.projects ?? [];
+  const projects = dummyProjects ?? [];
   const tasks = projects.flatMap((project) =>
     (project.tasks ?? []).map((task) => ({
       ...task,
@@ -18,14 +18,14 @@ const Tasks = () => {
       ) : (
         <div className="space-y-3">
           {tasks.map((task) => (
-            <article key={task.id} className="rounded-lg border p-4">
+            <article key={task.taskId} className="rounded-lg border p-4">
               <h2 className="text-xl font-semibold">{task.title}</h2>
               <p>{task.description}</p>
               <div className="mt-2 text-sm">
-                <p>Project: {task.projectName}</p>
-                <p>Assignee: {task.assignee?.name ?? task.assigneeId}</p>
+                <p>Project: {task.project?.name ?? task.projectName}</p>
+                <p>Assignee: {task.assignedTo?.name}</p>
                 <p>Status: {task.status}</p>
-                <p>Priority: {task.priority}</p>
+                <p>Due: {task.dueDate}</p>
               </div>
             </article>
           ))}

@@ -9,7 +9,7 @@ export function AuthProvider({ children }) {
   const login = (email, password) => {
     
     const foundUser = dummyUsers.find(
-      (u) => u.email === email && u.password === password
+      (u) => u.emailAddress === email && u.hashedPassword === password
     );
 
     if (foundUser) {
