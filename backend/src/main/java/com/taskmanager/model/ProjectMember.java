@@ -1,6 +1,6 @@
 // Join entity
 
-package com.taskmanager;
+package com.taskmanager.model;
 
 import jakarta.persistence.*;
 import java.time.Instant;
