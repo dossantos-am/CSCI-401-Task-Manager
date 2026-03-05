@@ -1,4 +1,4 @@
-package com.taskmanager;
+package com.taskmanager.model;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Embeddable;
