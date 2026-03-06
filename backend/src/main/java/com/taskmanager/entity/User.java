@@ -21,7 +21,9 @@ public class User {
 
     public User() {}
 
-    public User(String name, String emailAddress, String hashedPassword) {
+    // Curious if I need to add another paramater for Long userId?
+    public User(Long userId, String name, String emailAddress, String hashedPassword) {
+        this.userId = userId;
         this.name = name;
         this.emailAddress = emailAddress;
         this.hashedPassword = hashedPassword;
