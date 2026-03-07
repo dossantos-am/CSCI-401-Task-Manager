@@ -18,7 +18,11 @@ const Tasks = () => {
       ) : (
         <div className="space-y-3">
           {tasks.map((task) => (
-            <article key={task.taskId} className="rounded-lg border p-4">
+            <button
+              key={task.taskId}
+              type="button"
+              className="w-full rounded-lg border p-4 text-left hover:bg-gray-200"
+            >
               <h2 className="text-xl font-semibold">{task.title}</h2>
               <p>{task.description}</p>
               <div className="mt-2 text-sm">
@@ -27,7 +31,7 @@ const Tasks = () => {
                 <p>Status: {task.status}</p>
                 <p>Due: {task.dueDate}</p>
               </div>
-            </article>
+            </button>
           ))}
         </div>
       )}
