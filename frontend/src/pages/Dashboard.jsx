@@ -20,10 +20,14 @@ const Dashboard = () => {
         ) : (
           <div className="space-y-3">
             {projects.map((project) => (
-              <article key={project.projectId} className="rounded-lg border p-4">
+              <button
+                key={project.projectId}
+                type="button"
+                className="w-full rounded-lg border p-4 text-left hover:bg-gray-200"
+              >
                 <h3 className="text-xl font-semibold">{project.name}</h3>
                 <p>{project.description}</p>
-              </article>
+              </button>
             ))}
           </div>
         )}
@@ -36,10 +40,14 @@ const Dashboard = () => {
         ) : (
           <div className="space-y-3">
             {tasks.map((task) => (
-              <article key={task.taskId} className="rounded-lg border p-4">
+              <button
+                key={task.taskId}
+                type="button"
+                className="w-full rounded-lg border p-4 text-left hover:bg-gray-200"
+              >
                 <h3 className="text-xl font-semibold">{task.title}</h3>
                 <p>{task.description}</p>
-              </article>
+              </button>
             ))}
           </div>
         )}

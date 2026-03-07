@@ -16,7 +16,11 @@ const Projects = () => {
       ) : (
         <div className="space-y-3">
           {projects.map((project) => (
-            <article key={project.projectId} className="rounded-lg border p-4">
+            <button
+              key={project.projectId}
+              type="button"
+              className="w-full rounded-lg border p-4 text-left hover:bg-gray-200"
+            >
               <h2 className="text-xl font-semibold">{project.name}</h2>
               <p>{project.description}</p>
               <div className="mt-2 text-sm">
@@ -29,7 +33,7 @@ const Projects = () => {
                 <p>Start: {project.startDate}</p>
                 <p>Due: {project.dueDate}</p>
               </div>
-            </article>
+            </button>
           ))}
         </div>
       )}
