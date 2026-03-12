@@ -6,7 +6,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import com.taskmanager.dto.UserDto;
+import com.taskmanager.dto.UserResponse;
 import com.taskmanager.service.UserService;
 
 import lombok.AllArgsConstructor;
@@ -21,33 +21,33 @@ public class UserController {
 
     // Create Add User REST API
     @PostMapping
-    public ResponseEntity<UserDto> createUser(@RequestBody UserDto userDto) {
-        UserDto savedUser = userService.createUser(userDto);
+    public ResponseEntity<UserResponse> createUser(@RequestBody UserResponse userDto) {
+        UserResponse savedUser = userService.createUser(userDto);
         return new ResponseEntity<>(savedUser, HttpStatus.CREATED);
     }
 
     // Create
     // Create Get User REST API
     @GetMapping("{id}")
-    public ResponseEntity<UserDto> getUserById(@PathVariable("id") Long userId) {
-        UserDto userDto = userService.getUserById(userId);
+    public ResponseEntity<UserResponse> getUserById(@PathVariable("id") Long userId) {
+        UserResponse userDto = userService.getUserById(userId);
         return ResponseEntity.ok(userDto);
     }
 
     // Read
     // Create Get all users REST API
     @GetMapping
-    public ResponseEntity<List<UserDto>> getAllUsers() {
-        List<UserDto> users = userService.getAllUsers();
+    public ResponseEntity<List<UserResponse>> getAllUsers() {
+        List<UserResponse> users = userService.getAllUsers();
         return ResponseEntity.ok(users);
     }
 
     // Update
     // Create update user REST API
     @PutMapping("{id}")
-    public ResponseEntity<UserDto> updatedUser(@PathVariable("id")Long userId, 
-                                               @RequestBody UserDto updatedUser) {
-        UserDto userDto = userService.updateUser(userId, updatedUser);
+    public ResponseEntity<UserResponse> updatedUser(@PathVariable("id")Long userId, 
+                                               @RequestBody UserResponse updatedUser) {
+        UserResponse userDto = userService.updateUser(userId, updatedUser);
         return ResponseEntity.ok(userDto);
     }
 
