@@ -70,7 +70,7 @@ public class UserServiceImpl implements UserService{
 
     @Override
     public void deleteUser(Long userId) {
-        User user = userRepo.findById(userId).orElseThrow(
+        userRepo.findById(userId).orElseThrow(
             () -> new ResourceNotFoundException("User does not exist for given ID: " + userId)
         );
 
