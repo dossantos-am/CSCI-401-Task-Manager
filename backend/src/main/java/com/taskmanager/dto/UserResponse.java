@@ -9,6 +9,7 @@ import lombok.Setter;
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
+// DTO to return data to frontend
 public class UserResponse {
     private Long userId;
     private String firstName;
