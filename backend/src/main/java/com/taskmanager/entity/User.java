@@ -26,12 +26,11 @@ public class User {
     public User() {}
 
     // Curious if I need to add another paramater for Long userId?
-    public User(Long userId, String firstName, String lastName, String emailAddress, String hashedPassword) {
+    public User(Long userId, String firstName, String lastName, String emailAddress) {
         this.userId = userId;
         this.firstName = firstName;
         this.lastName = lastName;
         this.emailAddress = emailAddress;
-        this.hashedPassword = hashedPassword;
     }
 
     // Getters
