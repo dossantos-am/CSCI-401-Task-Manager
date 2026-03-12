@@ -11,7 +11,11 @@ public class User {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long userId;    // User.userId (PK)
     
-    private String name;
+    @Column(name = "first_name", nullable = false)
+    private String firstName;
+
+    @Column(name = "last_name", nullable = false)
+    private String lastName;
 
     @Column(name = "email_address", nullable = false, unique = true)
     private String emailAddress;
@@ -22,21 +26,24 @@ public class User {
     public User() {}
 
     // Curious if I need to add another paramater for Long userId?
-    public User(Long userId, String name, String emailAddress, String hashedPassword) {
+    public User(Long userId, String firstName, String lastName, String emailAddress, String hashedPassword) {
         this.userId = userId;
-        this.name = name;
+        this.firstName = firstName;
+        this.lastName = lastName;
         this.emailAddress = emailAddress;
         this.hashedPassword = hashedPassword;
     }
 
     // Getters
     public Long getUserId() { return userId; }
-    public String getName() { return name; }
+    public String getFirstName() { return firstName; }
+    public String getLastName() { return lastName; }
     public String getEmailAddress() { return emailAddress; }
     public String getHashedPassword() { return hashedPassword; }
 
     // Setters
-    public void setName(String name) { this.name = name; }
+    public void setFirstName(String firstName) { this.firstName = firstName; }
+    public void setLastName(String lastName) { this.lastName = lastName; }
     public void setEmailAddress(String emailAddress) { this.emailAddress = emailAddress; }
     public void setHashedPassword(String hashedPassword) { this.hashedPassword = hashedPassword; }
 }
