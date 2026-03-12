@@ -1,5 +1,23 @@
 package com.taskmanager.dto;
 
-public class LoginRequest {
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
+import jakarta.validation.constraints.Email;
+import jakarta.validation.constraints.NotBlank;
 
+@Getter
+@Setter
+@NoArgsConstructor
+@AllArgsConstructor
+public class LoginRequest {
+    private Long userId;
+
+    @Email
+    @NotBlank
+    private String emailAddress;
+
+    @NotBlank
+    private String password;
 }
