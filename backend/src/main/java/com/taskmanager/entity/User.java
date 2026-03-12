@@ -43,7 +43,7 @@ public class User {
 
     // Setters
     public void setFirstName(String firstName) { this.firstName = firstName; }
-    public void setLirstName(String lastName) { this.lastName = lastName; }
+    public void setLastName(String lastName) { this.lastName = lastName; }
     public void setEmailAddress(String emailAddress) { this.emailAddress = emailAddress; }
     public void setHashedPassword(String hashedPassword) { this.hashedPassword = hashedPassword; }
 }
