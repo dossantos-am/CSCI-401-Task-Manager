@@ -26,6 +26,10 @@ public class UserServiceImpl implements UserService{
     @Override
     public UserResponse createUser(CreateUserRequest request) {
         User user = UserMapper.mapToUser(request);
+
+        // Temporary until password hashing is implemented
+        user.setHashedPassword(request.getPassword()); 
+
         User savedUser = userRepo.save(user);
         return UserMapper.mapToUserResponse(savedUser);
     }
