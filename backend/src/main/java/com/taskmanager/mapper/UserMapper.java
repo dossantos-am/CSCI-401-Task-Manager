@@ -1,10 +1,11 @@
 package com.taskmanager.mapper;
 
+import com.taskmanager.dto.CreateUserRequest;
 import com.taskmanager.dto.UserResponse;
 import com.taskmanager.entity.User;
 
 public class UserMapper {
-    public static UserResponse mapToUserDto(User user) {
+    public static UserResponse mapToUserResponse(User user) {
         return new UserResponse(
             user.getUserId(),
             user.getFirstName(),
@@ -13,12 +14,11 @@ public class UserMapper {
         );
     }
 
-    public static User mapToUser(UserResponse userDto) {
-        return new User(
-            userDto.getUserId(),
-            userDto.getFirstName(),
-            userDto.getLastName(),
-            userDto.getEmailAddress()
-        );
+    public static User mapToUser(CreateUserRequest request) {
+        User user = new User();
+        user.setFirstName(request.getFirstName());
+        user.setLastName(request.getLastName());
+        user.setEmailAddress(request.getEmailAddress());
+        return user;
     }
 }
