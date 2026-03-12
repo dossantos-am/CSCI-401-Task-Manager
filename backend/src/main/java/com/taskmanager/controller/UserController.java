@@ -6,9 +6,12 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import com.taskmanager.dto.CreateUserRequest;
+import com.taskmanager.dto.UpdateUserRequest;
 import com.taskmanager.dto.UserResponse;
 import com.taskmanager.service.UserService;
 
+import jakarta.validation.Valid;
 import lombok.AllArgsConstructor;
 
 // Controller layer depends on service layer
@@ -21,8 +24,8 @@ public class UserController {
 
     // Create Add User REST API
     @PostMapping
-    public ResponseEntity<UserResponse> createUser(@RequestBody UserResponse userDto) {
-        UserResponse savedUser = userService.createUser(userDto);
+    public ResponseEntity<UserResponse> createUser(@Valid @RequestBody CreateUserRequest request) {
+        UserResponse savedUser = userService.createUser(request);
         return new ResponseEntity<>(savedUser, HttpStatus.CREATED);
     }
 
@@ -30,8 +33,8 @@ public class UserController {
     // Create Get User REST API
     @GetMapping("{id}")
     public ResponseEntity<UserResponse> getUserById(@PathVariable("id") Long userId) {
-        UserResponse userDto = userService.getUserById(userId);
-        return ResponseEntity.ok(userDto);
+        UserResponse userResponse = userService.getUserById(userId);
+        return ResponseEntity.ok(userResponse);
     }
 
     // Read
@@ -46,16 +49,16 @@ public class UserController {
     // Create update user REST API
     @PutMapping("{id}")
     public ResponseEntity<UserResponse> updateUser(@PathVariable("id")Long userId, 
-                                               @RequestBody UserResponse updatedUser) {
-        UserResponse userDto = userService.updateUser(userId, updatedUser);
-        return ResponseEntity.ok(userDto);
+                                               @Valid @RequestBody UpdateUserRequest request) {
+        UserResponse userResponse = userService.updateUser(userId, request);
+        return ResponseEntity.ok(userResponse);
     }
 
     // Delete
     // Create delete user REST API
     @DeleteMapping("{id}")
-    public ResponseEntity<String> deleteUser(@PathVariable("id") Long userId) {
+    public ResponseEntity<Void> deleteUser(@PathVariable("id") Long userId) {
         userService.deleteUser(userId);
-        return ResponseEntity.ok("User deleted successfully.");
+        return ResponseEntity.noContent().build();
     }
 }

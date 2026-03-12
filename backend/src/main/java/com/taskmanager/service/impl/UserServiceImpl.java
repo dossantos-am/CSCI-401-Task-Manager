@@ -5,6 +5,8 @@ import java.util.stream.Collectors;
 
 import org.springframework.stereotype.Service;
 
+import com.taskmanager.dto.CreateUserRequest;
+import com.taskmanager.dto.UpdateUserRequest;
 import com.taskmanager.dto.UserResponse;
 import com.taskmanager.entity.User;
 import com.taskmanager.exception.ResourceNotFoundException;
@@ -22,11 +24,10 @@ public class UserServiceImpl implements UserService{
 
     // Create user REST API
     @Override
-    public UserResponse createUser(UserResponse userDto) {
-        
-        User user = UserMapper.mapToUser(userDto);
+    public UserResponse createUser(CreateUserRequest request) {
+        User user = UserMapper.mapToUser(request);
         User savedUser = userRepo.save(user);
-        return UserMapper.mapToUserDto(savedUser);
+        return UserMapper.mapToUserResponse(savedUser);
     }
 
     // Get user by id REST API
@@ -35,32 +36,32 @@ public class UserServiceImpl implements UserService{
         User user = userRepo.findById(userId)
         .orElseThrow(() -> 
                 new ResourceNotFoundException("User does not exist for given ID: " + userId));
-        return UserMapper.mapToUserDto(user);
+        return UserMapper.mapToUserResponse(user);
     }
 
     // Get all users REST API
     @Override
     public List<UserResponse> getAllUsers() {
         List<User> users = userRepo.findAll();
-        return users.stream().map((user) -> UserMapper.mapToUserDto(user))
+        return users.stream().map((user) -> UserMapper.mapToUserResponse(user))
                 .collect(Collectors.toList());
     }
 
     // Update user REST API
     @Override
-    public UserResponse updateUser(Long userId, UserResponse updatedUser) {
+    public UserResponse updateUser(Long userId, UpdateUserRequest request) {
 
         User user = userRepo.findById(userId).orElseThrow(
             () -> new ResourceNotFoundException("User does not exist for given ID: " + userId)
         );
 
-        user.setFirstName(updatedUser.getFirstName());
-        user.setLastName(updatedUser.getLastName());
-        user.setEmailAddress(updatedUser.getEmailAddress());
+        user.setFirstName(request.getFirstName());
+        user.setLastName(request.getLastName());
+        user.setEmailAddress(request.getEmailAddress());
 
         User updatedUserObj = userRepo.save(user);
 
-        return UserMapper.mapToUserDto(updatedUserObj);
+        return UserMapper.mapToUserResponse(updatedUserObj);
     }
 
     @Override
