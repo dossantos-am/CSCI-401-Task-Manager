@@ -9,8 +9,7 @@ public class UserMapper {
             user.getUserId(),
             user.getFirstName(),
             user.getLastName(),
-            user.getEmailAddress(),
-            user.getHashedPassword()
+            user.getEmailAddress()
         );
     }
 
@@ -19,8 +18,7 @@ public class UserMapper {
             userDto.getUserId(),
             userDto.getFirstName(),
             userDto.getLastName(),
-            userDto.getEmailAddress(),
-            userDto.getHashedPassword()
+            userDto.getEmailAddress()
         );
     }
 }
