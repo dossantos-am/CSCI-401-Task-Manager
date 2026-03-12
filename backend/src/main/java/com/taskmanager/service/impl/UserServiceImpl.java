@@ -5,7 +5,7 @@ import java.util.stream.Collectors;
 
 import org.springframework.stereotype.Service;
 
-import com.taskmanager.dto.UserDto;
+import com.taskmanager.dto.UserResponse;
 import com.taskmanager.entity.User;
 import com.taskmanager.exception.ResourceNotFoundException;
 import com.taskmanager.mapper.UserMapper;
@@ -22,7 +22,7 @@ public class UserServiceImpl implements UserService{
 
     // Create user REST API
     @Override
-    public UserDto createUser(UserDto userDto) {
+    public UserResponse createUser(UserResponse userDto) {
         
         User user = UserMapper.mapToUser(userDto);
         User savedUser = userRepo.save(user);
@@ -31,7 +31,7 @@ public class UserServiceImpl implements UserService{
 
     // Get user by id REST API
     @Override
-    public UserDto getUserById(Long userId) {
+    public UserResponse getUserById(Long userId) {
         User user = userRepo.findById(userId)
         .orElseThrow(() -> 
                 new ResourceNotFoundException("User does not exist with given ID: " + userId));
@@ -40,7 +40,7 @@ public class UserServiceImpl implements UserService{
 
     // Get all users REST API
     @Override
-    public List<UserDto> getAllUsers() {
+    public List<UserResponse> getAllUsers() {
         List<User> users = userRepo.findAll();
         return users.stream().map((user) -> UserMapper.mapToUserDto(user))
                 .collect(Collectors.toList());
@@ -48,7 +48,7 @@ public class UserServiceImpl implements UserService{
 
     // Update user REST API
     @Override
-    public UserDto updateUser(Long userId, UserDto updatedUser) {
+    public UserResponse updateUser(Long userId, UserResponse updatedUser) {
 
         User user = userRepo.findById(userId).orElseThrow(
             () -> new ResourceNotFoundException("User does exist for give ID: " + userId)
