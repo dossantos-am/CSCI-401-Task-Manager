@@ -94,4 +94,3 @@ V3__update_constraints.sql
 - The `.env` file is ignored by Git (.gitignore) and must NOT be committed.
 - Only `.env.example` is committed to the repository.
 - in application.properties: spring.datasource.url=${DB_URL} will reference your .env file's credentials. This is the DB_URL string found in the Neon console.
-- Never commit real database credentials.
