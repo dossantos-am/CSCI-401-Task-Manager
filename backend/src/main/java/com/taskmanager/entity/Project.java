@@ -23,7 +23,8 @@ public class Project {
     private LocalDate dueDate;
 
     @Column(nullable = false)
-    private String status;
+    @Enumerated(EnumType.STRING)
+    private ProjectStatus status;
 
     @ManyToOne
     @JoinColumn(name = "created_by", referencedColumnName = "user_id", nullable = false)
@@ -35,7 +36,7 @@ public class Project {
     public Project() {}
 
     public Project(String name, String description, LocalDate startDate, LocalDate dueDate,
-                   String status, User createdBy) {
+                   ProjectStatus status, User createdBy) {
         this.name = name;
         this.description = description;
         this.startDate = startDate;
@@ -50,7 +51,7 @@ public class Project {
     public String getDescription() { return description; }
     public LocalDate getStartDate() { return startDate; }
     public LocalDate getDueDate() { return dueDate; }
-    public String getStatus() { return status; }
+    public ProjectStatus getStatus() { return status; }
     public User getCreatedBy() { return createdBy; }
     public Instant getCreatedAt() { return createdAt; }
 
@@ -60,7 +61,7 @@ public class Project {
     public void setDescription(String description) { this.description = description; }
     public void setStartDate(LocalDate startDate) { this.startDate = startDate; }
     public void setDueDate(LocalDate dueDate) { this.dueDate = dueDate; }
-    public void setStatus(String status) { this.status = status; }
-    //public void setCreatedBy(String createdBy) { this.createdBy = createdBy; }
-    //public void setCreatedAt(String createdAt) { this.createdAt = createdAt; }
+    public void setStatus(ProjectStatus status) { this.status = status; }
+    public void setCreatedBy(User createdBy) { this.createdBy = createdBy; }
+    public void setCreatedAt(Instant createdAt) { this.createdAt = createdAt; }
 }
