@@ -6,9 +6,9 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import com.taskmanager.dto.CreateUserRequest;
-import com.taskmanager.dto.UpdateUserRequest;
-import com.taskmanager.dto.UserResponse;
+import com.taskmanager.dto.userdto.CreateUserRequest;
+import com.taskmanager.dto.userdto.UpdateUserRequest;
+import com.taskmanager.dto.userdto.UserResponse;
 import com.taskmanager.service.UserService;
 
 import jakarta.validation.Valid;
@@ -22,31 +22,27 @@ public class UserController {
 
     private UserService userService;
 
-    // Create Add User REST API
+    // Create user
     @PostMapping
     public ResponseEntity<UserResponse> createUser(@Valid @RequestBody CreateUserRequest request) {
         UserResponse savedUser = userService.createUser(request);
         return new ResponseEntity<>(savedUser, HttpStatus.CREATED);
     }
 
-    // Create
-    // Create Get User REST API
-    @GetMapping("{id}")
+    // Get user by ID
     public ResponseEntity<UserResponse> getUserById(@PathVariable("id") Long userId) {
         UserResponse userResponse = userService.getUserById(userId);
         return ResponseEntity.ok(userResponse);
     }
 
-    // Read
-    // Create Get all users REST API
+    // Get all users
     @GetMapping
     public ResponseEntity<List<UserResponse>> getAllUsers() {
         List<UserResponse> users = userService.getAllUsers();
         return ResponseEntity.ok(users);
     }
 
-    // Update
-    // Create update user REST API
+    // Update user
     @PutMapping("{id}")
     public ResponseEntity<UserResponse> updateUser(@PathVariable("id")Long userId, 
                                                @Valid @RequestBody UpdateUserRequest request) {
@@ -54,8 +50,7 @@ public class UserController {
         return ResponseEntity.ok(userResponse);
     }
 
-    // Delete
-    // Create delete user REST API
+    // Delete user
     @DeleteMapping("{id}")
     public ResponseEntity<Void> deleteUser(@PathVariable("id") Long userId) {
         userService.deleteUser(userId);

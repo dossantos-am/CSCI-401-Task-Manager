@@ -2,11 +2,11 @@ package com.taskmanager.service;
 
 import java.util.List;
 
-import com.taskmanager.dto.CreateUserRequest;
-import com.taskmanager.dto.UpdateUserRequest;
-import com.taskmanager.dto.UserResponse;
+import com.taskmanager.dto.userdto.CreateUserRequest;
+import com.taskmanager.dto.userdto.UpdateUserRequest;
+import com.taskmanager.dto.userdto.UserResponse;
 
-// Interface that defines all the necessary REST API's for User entity
+// Interface that defines all the necessary REST APIs for User entity
 public interface UserService {
     UserResponse createUser(CreateUserRequest request);
 
