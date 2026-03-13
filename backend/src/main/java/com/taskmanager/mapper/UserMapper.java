@@ -1,9 +1,10 @@
 package com.taskmanager.mapper;
 
-import com.taskmanager.dto.CreateUserRequest;
-import com.taskmanager.dto.UserResponse;
+import com.taskmanager.dto.userdto.CreateUserRequest;
+import com.taskmanager.dto.userdto.UserResponse;
 import com.taskmanager.entity.User;
 
+// Convert DTO --> entity and entity --> DTO
 public class UserMapper {
     public static UserResponse mapToUserResponse(User user) {
         return new UserResponse(

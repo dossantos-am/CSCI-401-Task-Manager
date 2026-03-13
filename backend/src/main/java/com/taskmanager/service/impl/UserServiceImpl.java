@@ -5,9 +5,9 @@ import java.util.stream.Collectors;
 
 import org.springframework.stereotype.Service;
 
-import com.taskmanager.dto.CreateUserRequest;
-import com.taskmanager.dto.UpdateUserRequest;
-import com.taskmanager.dto.UserResponse;
+import com.taskmanager.dto.userdto.CreateUserRequest;
+import com.taskmanager.dto.userdto.UpdateUserRequest;
+import com.taskmanager.dto.userdto.UserResponse;
 import com.taskmanager.entity.User;
 import com.taskmanager.exception.ResourceNotFoundException;
 import com.taskmanager.mapper.UserMapper;
@@ -39,7 +39,7 @@ public class UserServiceImpl implements UserService{
     public UserResponse getUserById(Long userId) {
         User user = userRepo.findById(userId)
         .orElseThrow(() -> 
-                new ResourceNotFoundException("User does not exist for given ID: " + userId));
+                new ResourceNotFoundException("User does not exist for the given ID: " + userId));
         return UserMapper.mapToUserResponse(user);
     }
 
@@ -47,17 +47,16 @@ public class UserServiceImpl implements UserService{
     @Override
     public List<UserResponse> getAllUsers() {
         List<User> users = userRepo.findAll();
-        return users.stream().map((user) -> UserMapper.mapToUserResponse(user))
+        return users.stream()
+                .map((user) -> UserMapper.mapToUserResponse(user))
                 .collect(Collectors.toList());
     }
 
     // Update user REST API
     @Override
     public UserResponse updateUser(Long userId, UpdateUserRequest request) {
-
         User user = userRepo.findById(userId).orElseThrow(
-            () -> new ResourceNotFoundException("User does not exist for given ID: " + userId)
-        );
+            () -> new ResourceNotFoundException("User does not exist for the given ID: " + userId));
 
         user.setFirstName(request.getFirstName());
         user.setLastName(request.getLastName());
@@ -68,11 +67,11 @@ public class UserServiceImpl implements UserService{
         return UserMapper.mapToUserResponse(updatedUserObj);
     }
 
+    // Delete user REST API
     @Override
     public void deleteUser(Long userId) {
         userRepo.findById(userId).orElseThrow(
-            () -> new ResourceNotFoundException("User does not exist for given ID: " + userId)
-        );
+            () -> new ResourceNotFoundException("User does not exist for the given ID: " + userId));
 
         userRepo.deleteById(userId);
     }
