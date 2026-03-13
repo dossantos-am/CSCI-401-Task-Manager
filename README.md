@@ -58,7 +58,7 @@ Project → Branch → Connect → Java (this is an option in the dropdown menu 
 ### 3. Run the backend
 
 ```bash
-./mvnw clean spring-boot:run
+./mvnw spring-boot:run
 ```
 
 ---
