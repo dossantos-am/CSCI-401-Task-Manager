@@ -1,5 +1,5 @@
 import { useState, useContext } from "react";
-import { useNavigate } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { AuthContext } from "../context/AuthContext";
 
 const Login = () => {
@@ -75,6 +75,13 @@ const Login = () => {
           </button>
 
         </form>
+
+        <p className="text-sm text-center text-gray-500 mt-6">
+          First time here?{" "}
+          <Link to="/signup" className="text-blue-600 hover:underline font-medium">
+            Create an account
+          </Link>
+        </p>
 
       </div>
 
