@@ -1,5 +1,7 @@
 package com.taskmanager.dto.taskdto;
 
+import java.time.LocalDate;
+
 import com.taskmanager.entity.ProjectStatus;
 
 import lombok.AllArgsConstructor;
@@ -18,9 +20,6 @@ import jakarta.validation.constraints.NotNull;
 public class CreateTaskRequest {
 
     @NotBlank
-    private Long projectId;
-
-    @NotBlank
     private String title;
 
     private String description;
@@ -28,9 +27,6 @@ public class CreateTaskRequest {
     @NotNull
     private ProjectStatus status;
 
-    @NotBlank
-    private LocalDate dueDate;
-
     @NotNull
-    private Long assignedTo;
+    private LocalDate dueDate;
 }

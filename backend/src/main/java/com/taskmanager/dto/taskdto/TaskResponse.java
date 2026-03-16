@@ -21,7 +21,7 @@ public class TaskResponse {
     private String description;
     private ProjectStatus status;
     private LocalDate dueDate;
-    private Long assignedTo;
-    private Long createdBy;
+    private Long assignedToUserId;
+    private String assignedToName;
     private Instant createdAt;
 }
