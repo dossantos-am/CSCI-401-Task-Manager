@@ -1,0 +1,2 @@
+ALTER TABLE tasks
+ADD created_at TIMESTAMPTZ NOT NULL DEFAULT now();
