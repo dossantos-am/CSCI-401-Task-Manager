@@ -17,6 +17,7 @@ import jakarta.validation.constraints.NotNull;
 @AllArgsConstructor
 // Include fields the client chooses when updating a task
 public class UpdateTaskRequest {
+    
     @NotBlank
     private String title;
 
@@ -27,7 +28,4 @@ public class UpdateTaskRequest {
 
     @NotNull
     private LocalDate dueDate;
-
-    @NotNull
-    private Long assignedTo;
 }

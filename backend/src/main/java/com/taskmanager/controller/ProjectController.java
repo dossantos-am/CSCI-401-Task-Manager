@@ -35,7 +35,7 @@ public class ProjectController {
         return ResponseEntity.ok(projectResponse);
     }
 
-    // Get all prrojects
+    // Get all projects
     @GetMapping
     public ResponseEntity<List<ProjectResponse>> getAllProjects() {
         List<ProjectResponse> projects = projectService.getAllProjects();

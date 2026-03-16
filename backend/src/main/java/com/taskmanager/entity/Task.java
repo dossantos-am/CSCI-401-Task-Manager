@@ -1,9 +1,19 @@
 package com.taskmanager.entity;
 
 import jakarta.persistence.*;
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
+
+import java.time.Instant;
 import java.time.LocalDate;
 
 @Entity
+@Getter
+@Setter
+@NoArgsConstructor
+@AllArgsConstructor
 @Table(name = "tasks")
 public class Task {
 
@@ -23,7 +33,7 @@ public class Task {
     private String description;
 
     @Column(nullable = false)
-    private String status;
+    private ProjectStatus status;
 
     @Column(name = "due_date")
     private LocalDate dueDate;
@@ -32,29 +42,7 @@ public class Task {
     @JoinColumn(name = "assigned_to", referencedColumnName = "user_id")
     private User assignedTo;
 
-    public Task() {}
-
-    public Task(Project project, String title, String description, 
-    String status, LocalDate dueDate, User assignedTo) {
-        this.project = project;
-        this.title = title;
-        this.description = description;
-        this.status = status;
-        this.dueDate = dueDate;
-        this.assignedTo = assignedTo;
-    }
-
-    // Getters
-    public Long getTaskId() { return taskId; }
-    public String getTitle() { return title; }
-    public String getDescription() { return description; }
-    public String getStatus() { return status; }
-    public LocalDate getDueDate() { return dueDate; }
-    public User getAssignedTo() { return assignedTo; }
-
-    // Setters
-    public void setTitle(String title) { this.title = title; }
-    public void setDescription(String description) { this.description = description; }
-    public void setStatus(String status) { this.status = status; }
-    public void setDueDate(LocalDate dueDate) { this.dueDate = dueDate; }   
+    // Need to add this field to flyway migration
+    @Column(name = "created_at", nullable = false, updatable = false)
+    private Instant createdAt;
 }
