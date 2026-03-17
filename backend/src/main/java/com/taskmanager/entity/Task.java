@@ -33,6 +33,7 @@ public class Task {
     private String description;
 
     @Column(nullable = false)
+    @Enumerated(EnumType.STRING)
     private ProjectStatus status;
 
     @Column(name = "due_date")
