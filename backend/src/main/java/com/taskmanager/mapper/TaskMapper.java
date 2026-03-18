@@ -2,7 +2,6 @@ package com.taskmanager.mapper;
 
 import com.taskmanager.dto.taskdto.CreateTaskRequest;
 import com.taskmanager.dto.taskdto.TaskResponse;
-import com.taskmanager.dto.taskdto.UpdateTaskRequest;
 import com.taskmanager.entity.Task;
 import com.taskmanager.entity.User;
 
