@@ -9,6 +9,8 @@ import lombok.Setter;
 import java.time.Instant;
 import java.time.LocalDate;
 
+import org.hibernate.annotations.CreationTimestamp;
+
 @Entity
 @Getter
 @Setter
@@ -43,7 +45,7 @@ public class Task {
     @JoinColumn(name = "assigned_to", referencedColumnName = "user_id")
     private User assignedTo;
 
-    // Need to add this field to flyway migration
+    @CreationTimestamp
     @Column(name = "created_at", nullable = false, updatable = false)
     private Instant createdAt;
 }
