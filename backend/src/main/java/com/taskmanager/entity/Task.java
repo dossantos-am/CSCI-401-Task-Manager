@@ -20,7 +20,7 @@ public class Task {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "task_id")
-    private Long taskId;    // Task.id (PK)
+    private Long taskId; // Task.id (PK)
 
     @ManyToOne(fetch = FetchType.LAZY, optional = false)
     @JoinColumn(name = "project_id", nullable = false)
@@ -32,6 +32,7 @@ public class Task {
     @Column(columnDefinition = "text")
     private String description;
 
+    @Enumerated(EnumType.STRING)
     @Column(nullable = false)
     private ProjectStatus status;
 
