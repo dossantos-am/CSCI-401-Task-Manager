@@ -2,6 +2,7 @@ package com.taskmanager.service;
 
 import java.util.List;
 
+import com.taskmanager.dto.AuthResponse;
 import com.taskmanager.dto.userdto.CreateUserRequest;
 import com.taskmanager.dto.userdto.UpdateUserRequest;
 import com.taskmanager.dto.userdto.UserResponse;
@@ -17,4 +18,7 @@ public interface UserService {
     UserResponse updateUser(Long userId, UpdateUserRequest request);
 
     void deleteUser(Long userId);
+
+    AuthResponse loginUser(String emailAddress, String password);
+
 }

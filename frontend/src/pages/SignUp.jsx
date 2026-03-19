@@ -1,11 +1,13 @@
-import { useState } from "react";
+import { useContext, useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
+import { AuthContext } from "../context/AuthContext";
 
 const SignUp = () => {
+  const { register } = useContext(AuthContext);
   const navigate = useNavigate();
-  const apiBaseUrl = import.meta.env.VITE_API_BASE_URL ?? "http://localhost:8080";
 
-  const [name, setName] = useState("");
+  const [firstName, setFirstName] = useState("");
+  const [lastName, setLastName] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [error, setError] = useState("");
@@ -14,7 +16,7 @@ const SignUp = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
 
-    if (!name || !email || !password) {
+    if (!firstName || !lastName || !email || !password) {
       setError("Please fill out all fields.");
       return;
     }
@@ -23,22 +25,7 @@ const SignUp = () => {
       setIsSubmitting(true);
       setError("");
 
-      const response = await fetch(`${apiBaseUrl}/api/users`, {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({
-          name,
-          emailAddress: email,
-          hashedPassword: password,
-        }),
-      });
-
-      if (!response.ok) {
-        const message = await response.text();
-        throw new Error(message || "Unable to create account.");
-      }
+      await register(firstName, lastName, email, password);
 
       navigate("/login");
     } catch (err) {
@@ -61,14 +48,27 @@ const SignUp = () => {
         <form className="space-y-5" onSubmit={handleSubmit}>
           <div>
             <label className="block text-sm font-medium mb-2">
-              Name
+              First Name
             </label>
             <input
               type="text"
-              value={name}
-              onChange={(e) => setName(e.target.value)}
+              value={firstName}
+              onChange={(e) => setFirstName(e.target.value)}
               className="w-full px-4 py-3 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 transition"
-              placeholder="Enter your name"
+              placeholder="Enter your first name"
+            />
+          </div>
+
+          <div>
+            <label className="block text-sm font-medium mb-2">
+              Last Name
+            </label>
+            <input
+              type="text"
+              value={lastName}
+              onChange={(e) => setLastName(e.target.value)}
+              className="w-full px-4 py-3 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 transition"
+              placeholder="Enter your last name"
             />
           </div>
 

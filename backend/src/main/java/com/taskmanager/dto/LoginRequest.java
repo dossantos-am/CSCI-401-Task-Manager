@@ -12,7 +12,6 @@ import jakarta.validation.constraints.NotBlank;
 @NoArgsConstructor
 @AllArgsConstructor
 public class LoginRequest {
-    private Long userId;
 
     @Email
     @NotBlank
