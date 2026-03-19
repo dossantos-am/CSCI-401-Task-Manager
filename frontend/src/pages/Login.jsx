@@ -12,9 +12,9 @@ const Login = () => {
   const [error, setError] = useState("");
   
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
-    const success = login(email, password);
+    const success = await login(email, password);
     if (success) {
       navigate("/"); // go to dashboard
     } else {
@@ -70,9 +70,10 @@ const Login = () => {
             type="submit"
             className="w-full bg-blue-600 text-white py-3 rounded-lg hover:bg-blue-700 transition duration-200 font-semibold"
           >
-            {error && <p style={{ color: "red" }}>{error}</p>}
             Sign In
           </button>
+
+          {error && <p style={{ color: "red" }}>{error}</p>}
 
         </form>
 
