@@ -34,7 +34,6 @@ public class Task {
     @Column(columnDefinition = "text")
     private String description;
 
-    @Enumerated(EnumType.STRING)
     @Column(nullable = false)
     @Enumerated(EnumType.STRING)
     private ProjectStatus status;
