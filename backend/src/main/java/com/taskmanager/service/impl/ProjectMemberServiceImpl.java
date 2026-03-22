@@ -14,6 +14,7 @@ import com.taskmanager.service.ProjectMemberService;
 import com.taskmanager.entity.Project;
 import com.taskmanager.entity.ProjectMember;
 import com.taskmanager.entity.User;
+import com.taskmanager.exception.ResourceNotFoundException;
 import com.taskmanager.mapper.ProjectMemberMapper;
 
 import lombok.AllArgsConstructor;
@@ -28,14 +29,14 @@ public class ProjectMemberServiceImpl implements ProjectMemberService {
     @Override
     public ProjectMemberResponse addMember(Long projectId, Long userId, CreateProjectMemberRequest request) {
         if (projectMemberRepo.existsByProject_ProjectIdAndUser_UserId(projectId, userId)) {
-            throw new RuntimeException("User is already a member of this project");
+            throw new ResourceNotFoundException("User is already a member of this project");
         }
 
         Project project = projectRepo.findById(projectId).orElseThrow(
-            () -> new RuntimeException("Project not found"));
+            () -> new ResourceNotFoundException("Project not found"));
 
         User user = userRepo.findById(userId).orElseThrow(
-            () -> new RuntimeException("User not found"));
+            () -> new ResourceNotFoundException("User not found"));
 
         ProjectMember projectMember = new ProjectMember(project, user, request.getRole());
         
@@ -56,7 +57,7 @@ public class ProjectMemberServiceImpl implements ProjectMemberService {
     public ProjectMemberResponse getMembership(Long projectId, Long userId) {
         ProjectMember projectMember = projectMemberRepo
             .findByProject_ProjectIdAndUser_UserId(projectId, userId)
-            .orElseThrow(() -> new RuntimeException("Project membership not found"));
+            .orElseThrow(() -> new ResourceNotFoundException("Project membership not found"));
 
         return ProjectMemberMapper.mapToResponse(projectMember);
     }
@@ -65,7 +66,7 @@ public class ProjectMemberServiceImpl implements ProjectMemberService {
     public ProjectMemberResponse updateMemberRole(Long projectId, Long userId, UpdateProjectMemberRequest request) {
         ProjectMember projectMember = projectMemberRepo
             .findByProject_ProjectIdAndUser_UserId(projectId, userId)
-            .orElseThrow(() -> new RuntimeException("Project membership not found"));
+            .orElseThrow(() -> new ResourceNotFoundException("Project membership not found"));
 
         projectMember.setRole(request.getRole());
 
@@ -77,7 +78,7 @@ public class ProjectMemberServiceImpl implements ProjectMemberService {
     public void removeMember(Long projectId, Long userId) {
         ProjectMember projectMember = projectMemberRepo
             .findByProject_ProjectIdAndUser_UserId(projectId, userId)
-            .orElseThrow(() -> new RuntimeException("Project membership not found"));
+            .orElseThrow(() -> new ResourceNotFoundException("Project membership not found"));
 
         projectMemberRepo.delete(projectMember);
     }
