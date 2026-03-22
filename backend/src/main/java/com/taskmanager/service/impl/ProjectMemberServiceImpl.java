@@ -34,7 +34,7 @@ public class ProjectMemberServiceImpl implements ProjectMemberService {
         Project project = projectRepo.findById(projectId).orElseThrow(
             () -> new RuntimeException("Project not found"));
 
-        User user = userRepo.findById(projectId).orElseThrow(
+        User user = userRepo.findById(userId).orElseThrow(
             () -> new RuntimeException("User not found"));
 
         ProjectMember projectMember = new ProjectMember(project, user, request.getRole());
