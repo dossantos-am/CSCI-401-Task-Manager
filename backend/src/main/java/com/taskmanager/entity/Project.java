@@ -1,11 +1,20 @@
 package com.taskmanager.entity;
 
 import jakarta.persistence.*;
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
+
 import java.time.Instant;
 import java.time.LocalDate;
 
 @Entity
 @Table(name = "projects")
+@AllArgsConstructor
+@NoArgsConstructor
+@Getter
+@Setter
 public class Project {
 
     @Id
@@ -32,36 +41,4 @@ public class Project {
 
     @Column(name = "created_at", nullable = false, updatable = false)
     private Instant createdAt = Instant.now();
-
-    public Project() {}
-
-    public Project(String name, String description, LocalDate startDate, LocalDate dueDate,
-                   ProjectStatus status, User createdBy) {
-        this.name = name;
-        this.description = description;
-        this.startDate = startDate;
-        this.dueDate = dueDate;
-        this.status = status;
-        this.createdBy = createdBy;
-    }
-
-    // Getters
-    public Long getProjectId() { return projectId; }
-    public String getName() { return name; }
-    public String getDescription() { return description; }
-    public LocalDate getStartDate() { return startDate; }
-    public LocalDate getDueDate() { return dueDate; }
-    public ProjectStatus getStatus() { return status; }
-    public User getCreatedBy() { return createdBy; }
-    public Instant getCreatedAt() { return createdAt; }
-
-    // Setters
-    //public void setId(Long id) { this.id = id; }
-    public void setName(String name) { this.name = name; }
-    public void setDescription(String description) { this.description = description; }
-    public void setStartDate(LocalDate startDate) { this.startDate = startDate; }
-    public void setDueDate(LocalDate dueDate) { this.dueDate = dueDate; }
-    public void setStatus(ProjectStatus status) { this.status = status; }
-    public void setCreatedBy(User createdBy) { this.createdBy = createdBy; }
-    public void setCreatedAt(Instant createdAt) { this.createdAt = createdAt; }
 }

@@ -1,5 +1,7 @@
 package com.taskmanager.dto.projectmember;
 
+import com.taskmanager.entity.ProjectMemberRole;
+
 import jakarta.validation.constraints.NotBlank;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -12,5 +14,5 @@ import lombok.Setter;
 @NoArgsConstructor
 public class CreateProjectMemberRequest {
     @NotBlank
-    private String role;
+    private ProjectMemberRole role;
 }
