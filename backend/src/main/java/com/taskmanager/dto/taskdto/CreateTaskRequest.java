@@ -2,7 +2,7 @@ package com.taskmanager.dto.taskdto;
 
 import java.time.LocalDate;
 
-import com.taskmanager.entity.ProjectStatus;
+import com.taskmanager.entity.TaskStatus;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -25,7 +25,7 @@ public class CreateTaskRequest {
     private String description;
 
     @NotNull
-    private ProjectStatus status;
+    private TaskStatus status;
 
     @NotNull
     private LocalDate dueDate;

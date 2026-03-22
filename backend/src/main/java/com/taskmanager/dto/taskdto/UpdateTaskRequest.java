@@ -6,7 +6,7 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 import java.time.LocalDate;
 
-import com.taskmanager.entity.ProjectStatus;
+import com.taskmanager.entity.TaskStatus;
 
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
@@ -24,7 +24,7 @@ public class UpdateTaskRequest {
     private String description;
 
     @NotNull
-    private ProjectStatus status;
+    private TaskStatus status;
 
     @NotNull
     private LocalDate dueDate;

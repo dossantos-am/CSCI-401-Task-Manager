@@ -36,7 +36,7 @@ public class Task {
 
     @Column(nullable = false)
     @Enumerated(EnumType.STRING)
-    private ProjectStatus status;
+    private TaskStatus status;
 
     @Column(name = "due_date")
     private LocalDate dueDate;
