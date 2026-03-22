@@ -3,7 +3,7 @@ package com.taskmanager.dto.taskdto;
 import java.time.Instant;
 import java.time.LocalDate;
 
-import com.taskmanager.entity.ProjectStatus;
+import com.taskmanager.entity.TaskStatus;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -19,7 +19,7 @@ public class TaskResponse {
     private Long projectId;
     private String title;
     private String description;
-    private ProjectStatus status;
+    private TaskStatus status;
     private LocalDate dueDate;
     private Long assignedToUserId;
     private String assignedToName;
