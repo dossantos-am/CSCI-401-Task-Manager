@@ -22,12 +22,12 @@ public class UserController {
 
     private UserService userService;
 
-    // Create user
-    @PostMapping
-    public ResponseEntity<UserResponse> createUser(@Valid @RequestBody CreateUserRequest request) {
-        UserResponse savedUser = userService.createUser(request);
-        return new ResponseEntity<>(savedUser, HttpStatus.CREATED);
-    }
+    // This was how a user was created before adding authentication. For initial testing only
+    // @PostMapping
+    // public ResponseEntity<UserResponse> createUser(@Valid @RequestBody CreateUserRequest request) {
+    //     UserResponse savedUser = userService.createUser(request);
+    //     return new ResponseEntity<>(savedUser, HttpStatus.CREATED);
+    // }
 
     // Get user by ID
     public ResponseEntity<UserResponse> getUserById(@PathVariable("id") Long userId) {
