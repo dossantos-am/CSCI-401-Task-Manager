@@ -24,14 +24,15 @@ public class ProjectMember {
 
     // OWNER, EDITOR, or VIEWER
     @Column(nullable = false)
-    private String role;
+    @Enumerated(EnumType.STRING)
+    private ProjectMemberRole role;
 
     @Column(name = "joined_at", nullable = false, updatable = false)
     private Instant joinedAt = Instant.now();
 
     public ProjectMember() {}
 
-    public ProjectMember (Project project, User user, String role) {
+    public ProjectMember (Project project, User user, ProjectMemberRole role) {
         this.project = project;
         this.user = user;
         this.role = role;
@@ -40,9 +41,9 @@ public class ProjectMember {
 
     // Getters
     public ProjectMemberId getId() { return id; }
-    public String getRole() { return role; }
+    public ProjectMemberRole getRole() { return role; }
     public Instant getJoinedAt() { return joinedAt; }
 
     // Setter
-    public void setRole(String role) { this.role = role; }
+    public void setRole(ProjectMemberRole role) { this.role = role; }
 }
