@@ -52,6 +52,14 @@ public class TaskController {
         return ResponseEntity.ok(taskResponse);
     }
 
+    @PutMapping("/{taskId}/assign")
+    public ResponseEntity<TaskResponse> assignTask( 
+        @PathVariable Long taskId,
+        @RequestParam Long userId) {
+        TaskResponse updatedTask = taskService.assignTask(taskId, userId);
+        return ResponseEntity.ok(updatedTask);
+    }
+
     @DeleteMapping("{id}")
     public ResponseEntity<Void> deleteTask(@PathVariable("id") Long taskId) {
         taskService.deleteTask(taskId);

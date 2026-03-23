@@ -10,9 +10,12 @@ import com.taskmanager.dto.projectdto.CreateProjectRequest;
 import com.taskmanager.dto.projectdto.ProjectResponse;
 import com.taskmanager.dto.projectdto.UpdateProjectRequest;
 import com.taskmanager.entity.Project;
+import com.taskmanager.entity.ProjectMember;
+import com.taskmanager.entity.ProjectMemberRole;
 import com.taskmanager.entity.User;
 import com.taskmanager.exception.ResourceNotFoundException;
 import com.taskmanager.mapper.ProjectMapper;
+import com.taskmanager.repository.ProjectMemberRepo;
 import com.taskmanager.repository.ProjectRepo;
 import com.taskmanager.repository.UserRepo;
 import com.taskmanager.service.ProjectService;
@@ -25,6 +28,7 @@ public class ProjectServiceImpl implements ProjectService{
     
     private ProjectRepo projectRepo;
     private UserRepo userRepo;
+    private ProjectMemberRepo projectMemberRepo;
 
     // Create project REST API
     @Override
@@ -38,6 +42,10 @@ public class ProjectServiceImpl implements ProjectService{
         project.setCreatedAt(Instant.now());
 
         Project savedProject = projectRepo.save(project);
+
+        ProjectMember ownerMembership = new ProjectMember(savedProject, user, ProjectMemberRole.OWNER);
+        projectMemberRepo.save(ownerMembership);
+
         return ProjectMapper.mapToProjectResponse(savedProject);
     }
 
