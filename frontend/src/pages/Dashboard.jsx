@@ -10,7 +10,7 @@ const Dashboard = () => {
   return (
     <div className="space-y-6">
       <h1 className="text-2xl font-bold">
-        Welcome to your Dashboard {user.name}!
+        Welcome to your Dashboard {user.firstName}!
       </h1>
 
       <section className="space-y-3">
