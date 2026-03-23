@@ -10,10 +10,12 @@ import com.taskmanager.dto.taskdto.TaskResponse;
 import com.taskmanager.dto.taskdto.UpdateTaskRequest;
 import com.taskmanager.entity.Project;
 import com.taskmanager.entity.Task;
+import com.taskmanager.entity.User;
 import com.taskmanager.exception.ResourceNotFoundException;
 import com.taskmanager.mapper.TaskMapper;
 import com.taskmanager.repository.ProjectRepo;
 import com.taskmanager.repository.TaskRepo;
+import com.taskmanager.repository.UserRepo;
 import com.taskmanager.service.TaskService;
 
 import lombok.AllArgsConstructor;
@@ -24,6 +26,7 @@ public class TaskServiceImpl implements TaskService {
 
     private ProjectRepo projectRepo;
     private TaskRepo taskRepo;
+    private UserRepo userRepo;
 
     @Override
     public TaskResponse createTask(Long projectId, CreateTaskRequest request) {
@@ -67,10 +70,29 @@ public class TaskServiceImpl implements TaskService {
         task.setStatus(request.getStatus());
         task.setDueDate(request.getDueDate());
 
+        if (request.getAssignedToUserId() != null) {
+            User user = userRepo.findById(request.getAssignedToUserId())
+            .orElseThrow(() -> new ResourceNotFoundException("User not found"));
+        task.setAssignedTo(user);
+    }
         Task updatedTask = taskRepo.save(task);
 
         return TaskMapper.mapToTaskResponse(updatedTask);
     }
+
+    @Override
+    public TaskResponse assignTask(Long taskId, Long userId) {
+        Task task = taskRepo.findById(taskId)
+            .orElseThrow(() -> new ResourceNotFoundException("Task not found: " + taskId));
+
+        User user = userRepo.findById(userId)
+            .orElseThrow(() -> new ResourceNotFoundException("User not found: " + userId));
+
+        task.setAssignedTo(user);
+
+        Task savedTask = taskRepo.save(task);
+        return TaskMapper.mapToTaskResponse(savedTask);
+}
 
     @Override
     public void deleteTask(Long taskId) {

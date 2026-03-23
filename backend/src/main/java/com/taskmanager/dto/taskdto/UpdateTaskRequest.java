@@ -28,4 +28,7 @@ public class UpdateTaskRequest {
 
     @NotNull
     private LocalDate dueDate;
+
+    @NotNull
+    private Long assignedToUserId;
 }
