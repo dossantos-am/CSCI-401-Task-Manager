@@ -1,4 +1,5 @@
-import { useState } from "react";
+import { useContext, useState } from "react";
+import { AuthContext } from "../context/AuthContext";
 
 const initialFormData = {
   name: "",
@@ -11,20 +12,46 @@ const initialFormData = {
 const inputClassName =
   "mt-2 w-full rounded-xl border border-gray-200 bg-white px-4 py-3 text-sm text-gray-900 shadow-sm outline-none transition focus:border-gray-400 focus:ring-2 focus:ring-gray-200";
 
-const CreateProjectModal = ({ onClose }) => {
+const CreateProjectModal = ({ onClose, onProjectCreated }) => {
+  const { token, user } = useContext(AuthContext);
+  const apiBaseUrl = import.meta.env.VITE_API_BASE_URL ?? "http://localhost:8080";
   const [formData, setFormData] = useState(initialFormData);
+  const [error, setError] = useState(null);
 
   const handleChange = (event) => {
     const { name, value } = event.target;
-
-    setFormData((currentData) => ({
-      ...currentData,
-      [name]: value,
-    }));
+    setFormData((currentData) => ({ ...currentData, [name]: value }));
   };
 
-  const handleSubmit = (event) => {
+  const handleSubmit = async (event) => {
     event.preventDefault();
+    setError(null);
+
+    const response = await fetch(
+      `${apiBaseUrl}/api/projects?userId=${user.userId}`,
+      {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${token}`,
+        },
+        body: JSON.stringify({
+          name: formData.name,
+          description: formData.description,
+          startDate: formData.startDate,
+          dueDate: formData.dueDate,
+          status: "ACTIVE",
+        }),
+      }
+    );
+
+    if (!response.ok) {
+      setError("Failed to create project. Please try again.");
+      return;
+    }
+
+    const newProject = await response.json();
+    onProjectCreated(newProject);
     onClose();
   };
 
@@ -115,7 +142,7 @@ const CreateProjectModal = ({ onClose }) => {
               Optional. Example: alex@email.com, jordan@email.com
             </span>
           </label>
-
+          {error && <p className="text-sm text-red-500">{error}</p>}
           <div className="flex flex-col-reverse gap-3 border-t border-gray-200 pt-5 sm:flex-row sm:justify-end">
             <button
               type="button"
