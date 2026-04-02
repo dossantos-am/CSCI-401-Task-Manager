@@ -1,14 +1,42 @@
-import { useState } from "react";
-import { dummyProjects } from "../assets/dummyProjects";
-import { dummyUsers } from "../assets/dummyUsers";
+import { useContext, useEffect, useState } from "react";
+import { useNavigate } from "react-router-dom";
+import { AuthContext } from "../context/AuthContext";
+import { capitalizeName } from "../utils/formatters";
 import CreateProjectModal from "../components/CreateProjectModal";
+import SuccessToast from "../components/SuccessToast";
 
 const Projects = () => {
+  const { token } = useContext(AuthContext);
+  const navigate = useNavigate();
+  const apiBaseUrl = import.meta.env.VITE_API_BASE_URL ?? "http://localhost:8080";
   const [isCreateProjectOpen, setIsCreateProjectOpen] = useState(false);
-  const projects = dummyProjects ?? [];
-  const usersById = Object.fromEntries(
-    dummyUsers.map((user) => [user.userId, user])
-  );
+  const [projects, setProjects] = useState([]);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(null);
+  const [showSuccessToast, setShowSuccessToast] = useState(false);
+
+  useEffect(() => {
+    const fetchProjects = async () => {
+      try {
+        const response = await fetch(`${apiBaseUrl}/api/projects`, {
+          headers: { Authorization: `Bearer ${token}` },
+        });
+        if (!response.ok) throw new Error("Failed to fetch projects.");
+        const data = await response.json();
+        setProjects(data);
+      } catch (err) {
+        setError(err.message);
+      } finally {
+        setLoading(false);
+      }
+    };
+    fetchProjects();
+  }, [apiBaseUrl, token]);
+
+  const handleProjectCreated = (newProject) => {
+    setProjects((prev) => [newProject, ...prev]);
+    setShowSuccessToast(true);
+  };
 
   return (
     <div className="relative">
@@ -30,7 +58,11 @@ const Projects = () => {
           </button>
         </div>
 
-        {projects.length === 0 ? (
+        {loading ? (
+          <p className="text-gray-500">Loading projects...</p>
+        ) : error ? (
+          <p className="text-red-500">{error}</p>
+        ) : projects.length === 0 ? (
           <p>No projects found.</p>
         ) : (
           <div className="space-y-3">
@@ -38,16 +70,13 @@ const Projects = () => {
               <button
                 key={project.projectId}
                 type="button"
+                onClick={() => navigate(`/projects/${project.projectId}`)}
                 className="w-full rounded-lg border p-4 text-left hover:bg-gray-200"
               >
                 <h2 className="text-xl font-semibold">{project.name}</h2>
                 <p>{project.description}</p>
                 <div className="mt-2 text-sm">
-                  <p>
-                    Owner:{" "}
-                    {usersById[project.createdBy?.userId]?.name ??
-                      project.createdBy?.name}
-                  </p>
+                  <p>Owner: {capitalizeName(project.createdByName)}</p>
                   <p>Status: {project.status}</p>
                   <p>Start: {project.startDate}</p>
                   <p>Due: {project.dueDate}</p>
@@ -59,7 +88,17 @@ const Projects = () => {
       </div>
 
       {isCreateProjectOpen ? (
-        <CreateProjectModal onClose={() => setIsCreateProjectOpen(false)} />
+        <CreateProjectModal
+          onClose={() => setIsCreateProjectOpen(false)}
+          onProjectCreated={handleProjectCreated}
+        />
+      ) : null}
+
+      {showSuccessToast ? (
+        <SuccessToast
+          message="Project created successfully"
+          onDone={() => setShowSuccessToast(false)}
+        />
       ) : null}
     </div>
   );
