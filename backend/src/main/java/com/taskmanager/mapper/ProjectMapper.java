@@ -15,6 +15,7 @@ public class ProjectMapper {
             project.getDueDate(),
             project.getStatus(),
             project.getCreatedBy().getUserId(),
+            project.getCreatedBy().getFirstName() + " " + project.getCreatedBy().getLastName(),
             project.getCreatedAt()
         );
     }

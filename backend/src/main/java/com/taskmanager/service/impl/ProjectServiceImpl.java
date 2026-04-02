@@ -25,7 +25,7 @@ import lombok.AllArgsConstructor;
 @Service
 @AllArgsConstructor
 public class ProjectServiceImpl implements ProjectService{
-    
+
     private ProjectRepo projectRepo;
     private UserRepo userRepo;
     private ProjectMemberRepo projectMemberRepo;
