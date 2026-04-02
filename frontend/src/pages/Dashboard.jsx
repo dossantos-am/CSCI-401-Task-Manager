@@ -2,10 +2,13 @@ import { useContext, useState } from "react";
 import { AuthContext } from "../context/AuthContext";
 import { dummyProjects } from "../assets/dummyProjects";
 import CreateProjectModal from "../components/CreateProjectModal";
+import SuccessToast from "../components/SuccessToast";
+import { capitalizeName } from "../utils/formatters";
 
 const Dashboard = () => {
   const { user } = useContext(AuthContext);
   const [isCreateProjectOpen, setIsCreateProjectOpen] = useState(false);
+  const [showSuccessToast, setShowSuccessToast] = useState(false);
   const projects = dummyProjects ?? [];
   const tasks = projects.flatMap((project) => project.tasks ?? []);
 
@@ -19,7 +22,7 @@ const Dashboard = () => {
       >
         <div className="flex items-start justify-between gap-4">
           <h1 className="text-2xl font-bold">
-            Welcome to your Dashboard {user.firstName}!
+            Welcome to your Dashboard {capitalizeName(user.firstName)}!
           </h1>
 
           <button
@@ -73,7 +76,17 @@ const Dashboard = () => {
       </div>
 
       {isCreateProjectOpen ? (
-        <CreateProjectModal onClose={() => setIsCreateProjectOpen(false)} />
+        <CreateProjectModal
+          onClose={() => setIsCreateProjectOpen(false)}
+          onProjectCreated={() => setShowSuccessToast(true)}
+        />
+      ) : null}
+
+      {showSuccessToast ? (
+        <SuccessToast
+          message="Project created successfully"
+          onDone={() => setShowSuccessToast(false)}
+        />
       ) : null}
     </div>
   );

@@ -22,5 +22,6 @@ public class ProjectResponse {
     private LocalDate dueDate;
     private ProjectStatus status;
     private Long createdBy;
+    private String createdByName;
     private Instant createdAt;
 }

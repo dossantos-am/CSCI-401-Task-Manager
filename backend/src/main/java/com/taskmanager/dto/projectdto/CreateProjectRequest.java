@@ -17,7 +17,7 @@ import jakarta.validation.constraints.NotNull;
 @AllArgsConstructor
 // Include fields the client chooses when creating a project
 public class CreateProjectRequest {
-    
+
     @NotBlank
     private String name;
 
@@ -26,7 +26,7 @@ public class CreateProjectRequest {
 
     @NotNull
     private LocalDate startDate;
-    
+
     @NotNull
     private LocalDate dueDate;
 
