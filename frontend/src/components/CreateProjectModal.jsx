@@ -6,7 +6,7 @@ const initialFormData = {
   description: "",
   startDate: "",
   dueDate: "",
-  members: "",
+  members: [],
 };
 
 const inputClassName =
@@ -23,9 +23,39 @@ const CreateProjectModal = ({ onClose, onProjectCreated }) => {
     setFormData((currentData) => ({ ...currentData, [name]: value }));
   };
 
+  const addMember = () => {
+    setFormData((currentData) => ({
+      ...currentData,
+      members: [...currentData.members, {email: "", role: "VIEWER"}],
+    }));
+  };
+
+  const removeMember = (indexToRemove) => {
+    setFormData((currentData) => ({
+      ...currentData,
+      members: currentData.members.filter((_, index) => index !== indexToRemove),
+    }));
+  };
+
+  const handleMemberChange = (index, field, value) => {
+    setFormData((currentData) => ({
+      ...currentData,
+      members: currentData.members.map((member, currentIndex) => 
+        currentIndex === index
+        ? {...member, [field]: value}
+        : member),
+    }));
+  };
+
   const handleSubmit = async (event) => {
     event.preventDefault();
     setError(null);
+
+    const cleanedMembers = formData.members.map((member) => ({
+      email: member.email.trim(),
+      role: member.role,
+    }))
+    .filter((member) => member.email !== "");
 
     const response = await fetch(
       `${apiBaseUrl}/api/projects?userId=${user.userId}`,
@@ -41,12 +71,15 @@ const CreateProjectModal = ({ onClose, onProjectCreated }) => {
           startDate: formData.startDate,
           dueDate: formData.dueDate,
           status: "ACTIVE",
+          members: cleanedMembers,
         }),
       }
     );
 
     if (!response.ok) {
-      setError("Failed to create project. Please try again.");
+      const errorText = await response.text();
+      console.error("Create project failed:", response.status, errorText);
+      setError('Error ${response.status}: ${errorText || "Failed to create project."}');
       return;
     }
 
@@ -62,8 +95,7 @@ const CreateProjectModal = ({ onClose, onProjectCreated }) => {
           <div>
             <h2 className="text-2xl font-bold text-gray-900">Create Project</h2>
             <p className="mt-1 text-sm text-gray-500">
-              Add the basic project details. Members are optional and should be
-              entered as email addresses only.
+              Add the project details and optionally invite members by email.
             </p>
           </div>
 
@@ -128,20 +160,66 @@ const CreateProjectModal = ({ onClose, onProjectCreated }) => {
             </label>
           </div>
 
-          <label className="block text-sm font-semibold text-gray-700">
-            Members by Email
-            <textarea
-              name="members"
-              value={formData.members}
-              onChange={handleChange}
-              className={`${inputClassName} min-h-28 resize-y`}
-              placeholder="Add emails separated by commas or new lines"
-            />
-            <span className="mt-2 block text-xs font-normal text-gray-500">
-              Optional. Example: alex@email.com, jordan@email.com
-            </span>
-          </label>
+          <div className="block text-sm font-semibold text-gray-700">
+            <div className="flex items-center justify-between">
+              <span>Members</span>
+              <button
+                type="button"
+                onClick={addMember}
+                className="rounded-lg border border-gray-200 px-3 py-2 text-xs font-semibold text-gray-700 transition hover:bg-gray-100"
+                >
+                  + Add Member
+              </button>
+            </div>
+          
+
+            <div className="mt-3 space-y-3">
+              {formData.members.length === 0 && (
+                <p className="text-xs font-normal text-gray-500">
+                  Optional. Add members by email and choose a role.
+                </p>
+              )}
+
+              {formData.members.map((member, index) => (
+                <div
+                  key={index}
+                  className="grid gap-3 rounded-xl border border-gray-200 p-3 sm:grid-cols-[1fr_160px_auto]"
+                >
+                  <input
+                    type="email"
+                    value={member.email}
+                    onChange={(event) =>
+                      handleMemberChange(index, "email", event.target.value)
+                    }
+                    className={inputClassName}
+                    placeholder="Enter email address"
+                  />
+                  
+                  <select
+                    value={member.role}
+                    onChange={(event) =>
+                      handleMemberChange(index, "role", event.target.value)
+                    }
+                    className={inputClassName}
+                  >
+                    <option value="VIEWER">Viewer</option>
+                    <option value="EDITOR">Editor</option>
+                  </select>
+                  
+                  <button
+                    type="button"
+                    onClick={() => removeMember(index)}
+                    className="rounded-xl border border-red-200 px-4 py-3 text-sm font-semibold text-red-600 transition hover:bg-red-50"
+                  >
+                    Remove
+                  </button>
+                </div>
+              ))}
+            </div>
+          </div>
+
           {error && <p className="text-sm text-red-500">{error}</p>}
+
           <div className="flex flex-col-reverse gap-3 border-t border-gray-200 pt-5 sm:flex-row sm:justify-end">
             <button
               type="button"
