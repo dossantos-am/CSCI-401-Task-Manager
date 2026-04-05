@@ -10,6 +10,7 @@ import java.util.List;
 import com.taskmanager.dto.projectmember.CreateProjectMemberRequest;
 import com.taskmanager.entity.ProjectStatus;
 
+import jakarta.annotation.Nullable;
 import jakarta.validation.Valid;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
@@ -24,7 +25,7 @@ public class CreateProjectRequest {
     @NotBlank
     private String name;
 
-    @NotBlank
+    @Nullable
     private String description;
 
     @NotNull
