@@ -5,9 +5,12 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 import java.time.LocalDate;
+import java.util.List;
 
+import com.taskmanager.dto.projectmember.CreateProjectMemberRequest;
 import com.taskmanager.entity.ProjectStatus;
 
+import jakarta.validation.Valid;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 
@@ -32,4 +35,7 @@ public class CreateProjectRequest {
 
     @NotNull
     private ProjectStatus status;
+
+    @Valid
+    private List<CreateProjectMemberRequest> members;
 }
