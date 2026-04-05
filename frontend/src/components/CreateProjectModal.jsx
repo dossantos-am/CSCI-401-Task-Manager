@@ -99,7 +99,6 @@ const CreateProjectModal = ({ onClose, onProjectCreated }) => {
               onChange={handleChange}
               className={`${inputClassName} min-h-32 resize-y`}
               placeholder="Describe the project"
-              required
             />
           </label>
 
