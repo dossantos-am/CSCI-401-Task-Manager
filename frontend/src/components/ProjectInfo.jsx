@@ -85,7 +85,6 @@ const ProjectInfo = ({ project, onProjectUpdated }) => {
             onChange={handleChange}
             className={`${inputClassName} min-h-28 resize-y`}
             placeholder="Describe the project"
-            required
           />
         </label>
 
