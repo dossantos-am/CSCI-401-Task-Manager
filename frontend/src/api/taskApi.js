@@ -1,7 +1,7 @@
 // Get all tasks for a project
 export const getTasksByProjectId = async (apiBaseUrl, projectId, token) => {
     const response = await fetch(
-        `${apiBaseUrl}/api/tasks/project/${projectId}`,
+        `${apiBaseUrl}/api/tasks?projectId=${projectId}`,
         {
             headers: { Authorization: `Bearer ${token}`, },
         }
@@ -26,9 +26,7 @@ export const createTask = async (apiBaseUrl, projectId, token, taskData) => {
         }
     );
 
-    if(!response.ok) {
-        throw new Error(await response.text());
-    }
+    if(!response.ok) { throw new Error(await response.text()); }
 
     return response.json();
 };
@@ -47,9 +45,7 @@ export const updateTask = async (apiBaseUrl, taskId, token, taskData) => {
         }
     );
 
-    if(!response.ok) {
-        throw new Error(await response.text());
-    }
+    if(!response.ok) { throw new Error(await response.text()); }
     
     return response.json();
 };
@@ -67,7 +63,5 @@ export const deleteTask = async (apiBaseUrl, taskId, token) => {
         }
     );
 
-    if(!response.ok) {
-        throw new Error(await response.text());
-    }
+    if(!response.ok) { throw new Error(await response.text()); }
 };
