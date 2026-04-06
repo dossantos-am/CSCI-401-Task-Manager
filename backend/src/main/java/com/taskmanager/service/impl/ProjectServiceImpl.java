@@ -49,10 +49,12 @@ public class ProjectServiceImpl implements ProjectService{
         return ProjectMapper.mapToProjectResponse(project);
     }
 
-    // Get all projects REST API
+    // Get projects for the authenticated user REST API
     @Override
-    public List<ProjectResponse> getAllProjects() {
-        List<Project> projects = projectRepo.findAll();
+    public List<ProjectResponse> getProjectsByUser(String email) {
+        User user = userRepo.findByEmailAddress(email).orElseThrow(
+            () -> new ResourceNotFoundException("User does not exist for email: " + email));
+        List<Project> projects = projectRepo.findByCreatedBy(user);
         return projects.stream()
                 .map((project) -> ProjectMapper.mapToProjectResponse(project))
                 .collect(Collectors.toList());
