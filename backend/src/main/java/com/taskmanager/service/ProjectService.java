@@ -12,7 +12,7 @@ public interface ProjectService {
 
     ProjectResponse getProjectById(Long projectId);
 
-    List<ProjectResponse> getAllProjects();
+    List<ProjectResponse> getProjectsByUser(String email);
 
     ProjectResponse updateProject(Long projectId, UpdateProjectRequest request);
     

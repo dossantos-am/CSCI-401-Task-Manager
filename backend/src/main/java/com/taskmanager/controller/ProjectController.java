@@ -8,6 +8,7 @@ import java.util.List;
 
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.*;
 
 import jakarta.validation.Valid;
@@ -35,10 +36,11 @@ public class ProjectController {
         return ResponseEntity.ok(projectResponse);
     }
 
-    // Get all projects
+    // Get projects for the authenticated user
     @GetMapping
     public ResponseEntity<List<ProjectResponse>> getAllProjects() {
-        List<ProjectResponse> projects = projectService.getAllProjects();
+        String email = SecurityContextHolder.getContext().getAuthentication().getName();
+        List<ProjectResponse> projects = projectService.getProjectsByUser(email);
         return ResponseEntity.ok(projects);
     }
 
