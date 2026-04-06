@@ -79,7 +79,7 @@ const CreateProjectModal = ({ onClose, onProjectCreated }) => {
     if (!response.ok) {
       const errorText = await response.text();
       console.error("Create project failed:", response.status, errorText);
-      setError('Error ${response.status}: ${errorText || "Failed to create project."}');
+      setError(`Error ${response.status}: ${errorText || "Failed to create project."}`);
       return;
     }
 
