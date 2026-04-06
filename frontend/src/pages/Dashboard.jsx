@@ -1,6 +1,5 @@
 import { useContext, useState } from "react";
 import { AuthContext } from "../context/AuthContext";
-import { dummyProjects } from "../assets/dummyProjects";
 import CreateProjectModal from "../components/CreateProjectModal";
 import SuccessToast from "../components/SuccessToast";
 import { capitalizeName } from "../utils/formatters";
@@ -9,8 +8,6 @@ const Dashboard = () => {
   const { user } = useContext(AuthContext);
   const [isCreateProjectOpen, setIsCreateProjectOpen] = useState(false);
   const [showSuccessToast, setShowSuccessToast] = useState(false);
-  const projects = dummyProjects ?? [];
-  const tasks = projects.flatMap((project) => project.tasks ?? []);
 
   return (
     <div className="relative">
@@ -34,51 +31,34 @@ const Dashboard = () => {
           </button>
         </div>
 
-        <section className="space-y-3">
-          <h2 className="text-3xl font-bold">Projects</h2>
-          {projects.length === 0 ? (
-            <p>No projects found.</p>
-          ) : (
-            <div className="space-y-3">
-              {projects.map((project) => (
-                <button
-                  key={project.projectId}
-                  type="button"
-                  className="w-full rounded-lg border p-4 text-left hover:bg-gray-200"
-                >
-                  <h3 className="text-xl font-semibold">{project.name}</h3>
-                  <p>{project.description}</p>
-                </button>
-              ))}
-            </div>
-          )}
+        <section className="rounded-2xl border border-gray-200 bg-white p-6 shadow-sm">
+          <h2 className="text-2xl fond-bold text-gray-900">Getting Started</h2>
+          <p className="mt-2 text-sm text-gray-600">
+            Create a project to start organizing your work, inviting members, and managing tasks.
+          </p>
         </section>
 
-        <section className="space-y-3">
-          <h2 className="text-3xl font-bold">Tasks</h2>
-          {tasks.length === 0 ? (
-            <p>No tasks found.</p>
-          ) : (
-            <div className="space-y-3">
-              {tasks.map((task) => (
-                <button
-                  key={task.taskId}
-                  type="button"
-                  className="w-full rounded-lg border p-4 text-left hover:bg-gray-200"
-                >
-                  <h3 className="text-xl font-semibold">{task.title}</h3>
-                  <p>{task.description}</p>
-                </button>
-              ))}
-            </div>
-          )}
+        <section className="grid gap-4 md:grid-cols-2">
+          <div className="rounded-2xl border border-gray-200 bg-white p-6 shadow-sm">
+            <h3 className="text-lg font-semibold text-gray-900">Projects</h3>
+            <p className="mt-2 text-sm text-gray-600">
+              View and manage all your projects from the Projects page.
+            </p>
+          </div>
+
+          <div className="rounded-2xl border border-gray-200 bg-white p-6 shadow-sm">
+            <h3 className="text-lg font-semibold text-gray-900">Tasks</h3>
+            <p className="mt-2 text-sm text-gray-600">
+              Tasks are managed inside each individual project.
+            </p>
+          </div>
         </section>
       </div>
 
       {isCreateProjectOpen ? (
         <CreateProjectModal
           onClose={() => setIsCreateProjectOpen(false)}
-          onProjectCreated={() => setShowSuccessToast(true)}
+          onProjectCreated={() =>  setShowSuccessToast(true)}
         />
       ) : null}
 
