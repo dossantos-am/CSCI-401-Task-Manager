@@ -1,13 +1,45 @@
-import { useContext, useState } from "react";
+import { useContext, useEffect, useState } from "react";
 import { AuthContext } from "../context/AuthContext";
 import CreateProjectModal from "../components/CreateProjectModal";
 import SuccessToast from "../components/SuccessToast";
 import { capitalizeName } from "../utils/formatters";
 
+const statusStyle = (status) => {
+  if (status === "COMPLETED") return "text-green-600 font-semibold";
+  return "text-blue-600 font-semibold";
+};
+
 const Dashboard = () => {
-  const { user } = useContext(AuthContext);
+  const { user, token } = useContext(AuthContext);
+  const apiBaseUrl = import.meta.env.VITE_API_BASE_URL ?? "http://localhost:8080";
   const [isCreateProjectOpen, setIsCreateProjectOpen] = useState(false);
   const [showSuccessToast, setShowSuccessToast] = useState(false);
+  const [projects, setProjects] = useState([]);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(null);
+
+  useEffect(() => {
+    const fetchProjects = async () => {
+      try {
+        const response = await fetch(`${apiBaseUrl}/api/projects`, {
+          headers: { Authorization: `Bearer ${token}` },
+        });
+        if (!response.ok) throw new Error("Failed to fetch projects.");
+        const data = await response.json();
+        setProjects(data);
+      } catch (err) {
+        setError(err.message);
+      } finally {
+        setLoading(false);
+      }
+    };
+    fetchProjects();
+  }, [apiBaseUrl, token]);
+
+  const handleProjectCreated = (newProject) => {
+    setProjects((prev) => [newProject, ...prev]);
+    setShowSuccessToast(true);
+  };
 
   return (
     <div className="relative">
@@ -31,26 +63,39 @@ const Dashboard = () => {
           </button>
         </div>
 
-        <section className="rounded-2xl border border-gray-200 bg-white p-6 shadow-sm">
-          <h2 className="text-2xl fond-bold text-gray-900">Getting Started</h2>
-          <p className="mt-2 text-sm text-gray-600">
-            Create a project to start organizing your work, inviting members, and managing tasks.
-          </p>
-        </section>
-
-        <section className="grid gap-4 md:grid-cols-2">
-          <div className="rounded-2xl border border-gray-200 bg-white p-6 shadow-sm">
-            <h3 className="text-lg font-semibold text-gray-900">Projects</h3>
-            <p className="mt-2 text-sm text-gray-600">
-              View and manage all your projects from the Projects page.
-            </p>
+        <section className="rounded-xl border border-gray-200 shadow-sm">
+          <div className="rounded-t-xl border-b border-gray-200 bg-gray-50 px-5 py-3">
+            <h2 className="text-lg font-bold">Project Overview</h2>
           </div>
 
-          <div className="rounded-2xl border border-gray-200 bg-white p-6 shadow-sm">
-            <h3 className="text-lg font-semibold text-gray-900">Tasks</h3>
-            <p className="mt-2 text-sm text-gray-600">
-              Tasks are managed inside each individual project.
-            </p>
+          <div className="p-4">
+            {loading ? (
+              <p className="text-gray-500">Loading projects...</p>
+            ) : error ? (
+              <p className="text-red-500">{error}</p>
+            ) : projects.length === 0 ? (
+              <p className="text-gray-500">No projects found.</p>
+            ) : (
+              <div className="space-y-3">
+                {projects.map((project) => (
+                  <div
+                    key={project.projectId}
+                    className="rounded-lg border border-gray-200 p-4"
+                  >
+                    <h3 className="text-base font-semibold">{project.name}</h3>
+                    <p className="mt-1 text-sm text-gray-600">{project.description}</p>
+                    <div className="mt-3 flex items-end justify-between text-sm">
+                      <span className="text-gray-500">
+                        Due: {project.dueDate ?? "—"}
+                      </span>
+                      <span className={statusStyle(project.status)}>
+                        {project.status}
+                      </span>
+                    </div>
+                  </div>
+                ))}
+              </div>
+            )}
           </div>
         </section>
       </div>
@@ -58,7 +103,7 @@ const Dashboard = () => {
       {isCreateProjectOpen ? (
         <CreateProjectModal
           onClose={() => setIsCreateProjectOpen(false)}
-          onProjectCreated={() =>  setShowSuccessToast(true)}
+          onProjectCreated={handleProjectCreated}
         />
       ) : null}
 
