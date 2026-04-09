@@ -1,5 +1,7 @@
+import { apiBaseUrl } from "../config";
+
 // Create project
-export const createProject = async (apiBaseUrl, userId, token,  projectData) => {
+export const createProject = async (userId, token,  projectData) => {
     const response = await fetch(
         `${apiBaseUrl}/api/projects?userId=${userId}`,
         {
@@ -18,7 +20,7 @@ export const createProject = async (apiBaseUrl, userId, token,  projectData) => 
 }
 
 // Get all projects
-export const getProjects = async (apiBaseUrl, token) => {
+export const getProjects = async (token) => {
     const response = await fetch(
         `${apiBaseUrl}/api/projects`,
         {
@@ -32,7 +34,7 @@ export const getProjects = async (apiBaseUrl, token) => {
 }
 
 // Get project by project ID
-export const getProjectByProjectId = async (apiBaseUrl, projectId, token) => {
+export const getProjectByProjectId = async (projectId, token) => {
     const response = await fetch(
         `${apiBaseUrl}/api/projects/${projectId}`,
         {
@@ -46,7 +48,7 @@ export const getProjectByProjectId = async (apiBaseUrl, projectId, token) => {
 }
 
 // Update project
-export const updateProject = async (apiBaseUrl, projectId, token, projectData) => {
+export const updateProject = async (projectId, token, projectData) => {
     const response = await fetch(
         `${apiBaseUrl}/api/projects/${projectId}`,
         {
@@ -65,7 +67,7 @@ export const updateProject = async (apiBaseUrl, projectId, token, projectData) =
 };
 
 // Delete project
-export const deleteProject = async (apiBaseUrl, projectId, token) => {
+export const deleteProject = async (projectId, token) => {
     const response = await fetch(
         `${apiBaseUrl}/api/projects/${projectId}`,
         {

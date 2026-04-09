@@ -1,5 +1,7 @@
+import { apiBaseUrl } from "../config";
+
 // Get all tasks for a project
-export const getTasksByProjectId = async (apiBaseUrl, projectId, token) => {
+export const getTasksByProjectId = async (projectId, token) => {
     const response = await fetch(
         `${apiBaseUrl}/api/tasks?projectId=${projectId}`,
         {
@@ -13,7 +15,7 @@ export const getTasksByProjectId = async (apiBaseUrl, projectId, token) => {
 };
 
 // Create task
-export const createTask = async (apiBaseUrl, projectId, token, taskData) => {
+export const createTask = async (projectId, token, taskData) => {
     const response = await fetch(
         `${apiBaseUrl}/api/tasks?projectId=${projectId}`,
         {
@@ -32,7 +34,7 @@ export const createTask = async (apiBaseUrl, projectId, token, taskData) => {
 };
 
 // Update task
-export const updateTask = async (apiBaseUrl, taskId, token, taskData) => {
+export const updateTask = async (taskId, token, taskData) => {
     const response = await fetch(
         `${apiBaseUrl}/api/tasks/${taskId}`,
         {
@@ -51,7 +53,7 @@ export const updateTask = async (apiBaseUrl, taskId, token, taskData) => {
 };
 
 // Delete task
-export const deleteTask = async (apiBaseUrl, taskId, token) => {
+export const deleteTask = async (taskId, token) => {
     const response = await fetch(
         `${apiBaseUrl}/api/tasks/${taskId}`,
         {

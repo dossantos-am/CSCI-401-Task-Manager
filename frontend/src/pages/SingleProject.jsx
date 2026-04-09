@@ -12,7 +12,6 @@ const SingleProject = () => {
   const { projectId } = useParams();
   const { token } = useContext(AuthContext);
   const navigate = useNavigate();
-  const apiBaseUrl = import.meta.env.VITE_API_BASE_URL ?? "http://localhost:8080";
 
   const [project, setProject] = useState(null);
   const [tasks, setTasks] = useState([]);
@@ -25,7 +24,7 @@ const SingleProject = () => {
   useEffect(() => {
     const fetchProject = async () => {
       try {
-        const data = await getProjectByProjectId(apiBaseUrl, projectId, token);
+        const data = await getProjectByProjectId(projectId, token);
         setProject(data);
       } catch (e) {
         setError(e.message);
@@ -35,14 +34,14 @@ const SingleProject = () => {
     };
 
     fetchProject();
-  }, [apiBaseUrl, projectId, token]);
+  }, [projectId, token]);
 
 
     useEffect(() => {
       const fetchTasks = async () => {
         try {
           setTaskError(null);
-          const data = await getTasksByProjectId(apiBaseUrl, projectId, token);
+          const data = await getTasksByProjectId(projectId, token);
           setTasks(data);
         } catch (e) {
           setTaskError(e.message);
@@ -52,7 +51,7 @@ const SingleProject = () => {
       };
 
       fetchTasks();
-    }, [apiBaseUrl, projectId, token]);
+    }, [projectId, token]);
 
   if (loading) {
     return <p className="text-gray-500">Loading project...</p>;
