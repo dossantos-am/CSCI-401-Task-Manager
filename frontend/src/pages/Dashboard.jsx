@@ -3,6 +3,7 @@ import { AuthContext } from "../context/AuthContext";
 import CreateProjectModal from "../components/CreateProjectModal";
 import SuccessToast from "../components/SuccessToast";
 import { capitalizeName } from "../utils/formatters";
+import { getProjects } from "../api/projectApi";
 
 const statusStyle = (status) => {
   if (status === "COMPLETED") return "text-green-600 font-semibold";
@@ -20,12 +21,8 @@ const Dashboard = () => {
   useEffect(() => {
     const fetchProjects = async () => {
       try {
-        const response = await fetch(`${apiBaseUrl}/api/projects`, {
-          headers: { Authorization: `Bearer ${token}` },
-        });
-        if (!response.ok) throw new Error("Failed to fetch projects.");
-        const data = await response.json();
-        setProjects(data);
+        const project = await getProjects(token);
+        setProjects(project);
       } catch (err) {
         setError(err.message);
       } finally {
