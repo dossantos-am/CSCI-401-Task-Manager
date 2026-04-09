@@ -15,7 +15,6 @@ const inputClassName =
 
 const CreateProjectModal = ({ onClose, onProjectCreated }) => {
   const { token, user } = useContext(AuthContext);
-  const apiBaseUrl = import.meta.env.VITE_API_BASE_URL ?? "http://localhost:8080";
   const [formData, setFormData] = useState(initialFormData);
   const [error, setError] = useState(null);
 
@@ -68,7 +67,7 @@ const CreateProjectModal = ({ onClose, onProjectCreated }) => {
     };
 
     try {
-      const newProject = await createProject(apiBaseUrl, user.userId, token, payload);
+      const newProject = await createProject(user.userId, token, payload);
       onProjectCreated(newProject);
       onClose();
     } catch(e) {
