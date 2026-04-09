@@ -1,5 +1,6 @@
 import { useContext, useState } from "react";
 import { AuthContext } from "../context/AuthContext";
+import { createProject } from "../api/projectApi";
 
 const initialFormData = {
   name: "",
@@ -57,35 +58,23 @@ const CreateProjectModal = ({ onClose, onProjectCreated }) => {
     }))
     .filter((member) => member.email !== "");
 
-    const response = await fetch(
-      `${apiBaseUrl}/api/projects?userId=${user.userId}`,
-      {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-          Authorization: `Bearer ${token}`,
-        },
-        body: JSON.stringify({
-          name: formData.name,
-          description: formData.description,
-          startDate: formData.startDate,
-          dueDate: formData.dueDate,
-          status: "ACTIVE",
-          members: cleanedMembers,
-        }),
-      }
-    );
+    const payload = {
+      name: formData.name,
+      description: formData.description,
+      startDate: formData.startDate,
+      dueDate: formData.dueDate,
+      status: "ACTIVE",
+      members: cleanedMembers,
+    };
 
-    if (!response.ok) {
-      const errorText = await response.text();
-      console.error("Create project failed:", response.status, errorText);
-      setError(`Error ${response.status}: ${errorText || "Failed to create project."}`);
-      return;
+    try {
+      const newProject = await createProject(apiBaseUrl, user.userId, token, payload);
+      onProjectCreated(newProject);
+      onClose();
+    } catch(e) {
+      setError(e.message);
     }
 
-    const newProject = await response.json();
-    onProjectCreated(newProject);
-    onClose();
   };
 
   return (
