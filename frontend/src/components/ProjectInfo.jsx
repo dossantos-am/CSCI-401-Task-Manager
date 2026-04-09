@@ -1,5 +1,6 @@
 import { useContext, useState } from "react";
 import { AuthContext } from "../context/AuthContext";
+import { updateProject } from "../api/projectApi";
 
 const inputClassName =
   "mt-2 w-full rounded-xl border border-gray-200 bg-white px-4 py-3 text-sm text-gray-900 shadow-sm outline-none transition focus:border-gray-400 focus:ring-2 focus:ring-gray-200";
@@ -32,28 +33,15 @@ const ProjectInfo = ({ project, onProjectUpdated }) => {
     setSaving(true);
     setError(null);
 
-    const response = await fetch(
-      `${apiBaseUrl}/api/projects/${project.projectId}`,
-      {
-        method: "PUT",
-        headers: {
-          "Content-Type": "application/json",
-          Authorization: `Bearer ${token}`,
-        },
-        body: JSON.stringify(formData),
-      }
-    );
-
-    setSaving(false);
-
-    if (!response.ok) {
-      setError("Failed to save changes. Please try again.");
-      return;
+    try {
+      const updatedProject = await updateProject(apiBaseUrl, project.projectId, token, formData);
+      setSaved(true);
+      onProjectUpdated(updatedProject);
+    } catch(e) {
+      setError(e.message);
+    } finally {
+      setSaving(false);
     }
-
-    const updated = await response.json();
-    setSaved(true);
-    onProjectUpdated(updated);
   };
 
   return (
