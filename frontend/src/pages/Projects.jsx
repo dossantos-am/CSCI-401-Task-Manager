@@ -9,7 +9,6 @@ import SuccessToast from "../components/SuccessToast";
 const Projects = () => {
   const { token } = useContext(AuthContext);
   const navigate = useNavigate();
-  const apiBaseUrl = import.meta.env.VITE_API_BASE_URL ?? "http://localhost:8080";
   const [isCreateProjectOpen, setIsCreateProjectOpen] = useState(false);
   const [projects, setProjects] = useState([]);
   const [loading, setLoading] = useState(true);
@@ -19,7 +18,7 @@ const Projects = () => {
   useEffect(() => {
     const fetchProjects = async () => {
       try {
-        const data = await getProjects(apiBaseUrl, token);
+        const data = await getProjects(token);
         setProjects(data);
       } catch (err) {
         setError(err.message);
@@ -28,7 +27,7 @@ const Projects = () => {
       }
     };
     fetchProjects();
-  }, [apiBaseUrl, token]);
+  }, [token]);
 
   const handleProjectCreated = (newProject) => {
     setProjects((prev) => [newProject, ...prev]);

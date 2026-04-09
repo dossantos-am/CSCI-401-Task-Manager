@@ -14,7 +14,6 @@ const inputClassName =
 
 const CreateTaskModal = ({ projectId, onClose, onTaskCreated }) => {
     const { token } = useContext(AuthContext);
-    const apiBaseUrl = import.meta.env.VITE_API_BASE_URL ?? "http://localhost:8080";
 
     const [formData, setFormData] = useState(initialFormData);
     const [error, setError] = useState(null);
@@ -39,7 +38,7 @@ const CreateTaskModal = ({ projectId, onClose, onTaskCreated }) => {
                 dueDate: formData.dueDate || null,
             };
 
-            const newTask = await createTask(apiBaseUrl, projectId, token, payload);
+            const newTask = await createTask(projectId, token, payload);
             onTaskCreated(newTask);
             onClose();
         } catch (e) {
