@@ -11,7 +11,6 @@ const statusStyle = (status) => {
 
 const Dashboard = () => {
   const { user, token } = useContext(AuthContext);
-  const apiBaseUrl = import.meta.env.VITE_API_BASE_URL ?? "http://localhost:8080";
   const [isCreateProjectOpen, setIsCreateProjectOpen] = useState(false);
   const [showSuccessToast, setShowSuccessToast] = useState(false);
   const [projects, setProjects] = useState([]);
@@ -34,7 +33,7 @@ const Dashboard = () => {
       }
     };
     fetchProjects();
-  }, [apiBaseUrl, token]);
+  }, [token]);
 
   const handleProjectCreated = (newProject) => {
     setProjects((prev) => [newProject, ...prev]);

@@ -9,7 +9,6 @@ const STATUS_OPTIONS = ["ACTIVE", "COMPLETED", "ARCHIVED"];
 
 const ProjectInfo = ({ project, onProjectUpdated }) => {
   const { token } = useContext(AuthContext);
-  const apiBaseUrl = import.meta.env.VITE_API_BASE_URL ?? "http://localhost:8080";
 
   const [formData, setFormData] = useState({
     name: project.name ?? "",
@@ -34,7 +33,7 @@ const ProjectInfo = ({ project, onProjectUpdated }) => {
     setError(null);
 
     try {
-      const updatedProject = await updateProject(apiBaseUrl, project.projectId, token, formData);
+      const updatedProject = await updateProject(project.projectId, token, formData);
       setSaved(true);
       onProjectUpdated(updatedProject);
     } catch(e) {
