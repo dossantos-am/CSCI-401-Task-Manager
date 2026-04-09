@@ -2,6 +2,7 @@ import { useContext, useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { AuthContext } from "../context/AuthContext";
 import { capitalizeName } from "../utils/formatters";
+import { getProjects } from "../api/projectApi"
 import CreateProjectModal from "../components/CreateProjectModal";
 import SuccessToast from "../components/SuccessToast";
 
@@ -18,11 +19,7 @@ const Projects = () => {
   useEffect(() => {
     const fetchProjects = async () => {
       try {
-        const response = await fetch(`${apiBaseUrl}/api/projects`, {
-          headers: { Authorization: `Bearer ${token}` },
-        });
-        if (!response.ok) throw new Error("Failed to fetch projects.");
-        const data = await response.json();
+        const data = await getProjects(apiBaseUrl, token);
         setProjects(data);
       } catch (err) {
         setError(err.message);

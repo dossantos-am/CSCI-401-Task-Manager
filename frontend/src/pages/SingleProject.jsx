@@ -1,11 +1,12 @@
 import { useContext, useEffect, useState } from "react";
 import { useParams, useNavigate } from "react-router-dom";
 import { AuthContext } from "../context/AuthContext";
+import { getTasksByProjectId } from "../api/taskApi";
+import { getProjectByProjectId } from "../api/projectApi";
 import ProjectInfo from "../components/ProjectInfo";
 import TaskList from "../components/TaskList";
 import AddMembers from "../components/AddMembers";
 import CreateTaskModal from "../components/CreateTaskModal";
-import { getTasksByProjectId } from "../api/taskApi";
 
 const SingleProject = () => {
   const { projectId } = useParams();
@@ -24,13 +25,7 @@ const SingleProject = () => {
   useEffect(() => {
     const fetchProject = async () => {
       try {
-        const response = await fetch(`${apiBaseUrl}/api/projects/${projectId}`, {
-          headers: { Authorization: `Bearer ${token}` },
-        });
-
-        if (!response.ok) { throw new Error("Failed to load project."); }
-
-        const data = await response.json();
+        const data = await getProjectByProjectId(apiBaseUrl, projectId, token);
         setProject(data);
       } catch (e) {
         setError(e.message);
