@@ -27,15 +27,16 @@ public class ProjectMemberServiceImpl implements ProjectMemberService {
     private final UserRepo userRepo;
 
     @Override
-    public ProjectMemberResponse addMember(Long projectId, Long userId, CreateProjectMemberRequest request) {
-        if (projectMemberRepo.existsByProject_ProjectIdAndUser_UserId(projectId, userId)) {
-            throw new ResourceNotFoundException("User is already a member of this project");
+    public ProjectMemberResponse addMember(Long projectId, CreateProjectMemberRequest request) {
+        boolean alreadyIsAMember = projectMemberRepo.existsByProject_ProjectIdAndUser_EmailAddress(projectId, request.getEmail());
+        if (alreadyIsAMember) {
+            throw new IllegalArgumentException("User is already a member of this project");
         }
 
         Project project = projectRepo.findById(projectId).orElseThrow(
             () -> new ResourceNotFoundException("Project not found"));
 
-        User user = userRepo.findById(userId).orElseThrow(
+        User user = userRepo.findByEmailAddress(request.getEmail()).orElseThrow(
             () -> new ResourceNotFoundException("User not found"));
 
         ProjectMember projectMember = new ProjectMember(project, user, request.getRole());
