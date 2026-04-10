@@ -106,7 +106,7 @@ const SingleProject = () => {
         </div>
       </div>
 
-      <AddMembers />
+      <AddMembers projectId={projectId} token={token}/>
 
       {isCreateTaskOpen && (
         <CreateTaskModal
