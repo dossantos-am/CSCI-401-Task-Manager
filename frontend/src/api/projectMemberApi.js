@@ -1,9 +1,9 @@
 import { apiBaseUrl } from "../config";
 
 // Add member
-export const addMember = async (projectId, projectMemberId, token, memberData) => {
+export const addMember = async (projectId, token, memberData) => {
     const response = await fetch(
-        `${apiBaseUrl}/api/project-members?projectId=${projectId}&userId=${projectMemberId}`,
+        `${apiBaseUrl}/api/project-members?projectId=${projectId}&userId=${userId}`,
         {
             method: "POST",
             headers:  {
@@ -20,9 +20,9 @@ export const addMember = async (projectId, projectMemberId, token, memberData) =
 }
 
 // Remove member
-export const removeMember = async (projectId, projectMemberId, token) => {
+export const removeMember = async (projectId, userId, token) => {
     const response = await fetch(
-        `${apiBaseUrl}/api/project-members/project/${projectId}/user/${projectMemberId}`,
+        `${apiBaseUrl}/api/project-members/project/${projectId}/user/${userId}`,
         {
             method: "DELETE",
             headers: {
@@ -36,9 +36,9 @@ export const removeMember = async (projectId, projectMemberId, token) => {
 }
 
 // Edit membership
-export const editMembership = async (projectId, projectMemberId, token, memberData) => {
+export const editMembership = async (projectId, userId, token, memberData) => {
     const response = await fetch(
-        `${apiBaseUrl}/api/project-members/project/${projectId}/user/${projectMemberId}`,
+        `${apiBaseUrl}/api/project-members/project/${projectId}/user/${userId}`,
         {
             method: "PUT",
             headers: {
