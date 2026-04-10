@@ -1,4 +1,59 @@
-const AddMembers = () => {
+import { useEffect } from "react";
+import { getMembers, addMember, removeMember } from "../api/projectMemberApi";
+
+const initialFormData = {
+  role: "",
+  email: ""
+};
+
+const AddMembers = ({ projectId, token }) => {
+
+  const [members, setMembers] = useState([]);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(null);
+  const [formData, setFormData]  = useState(initialFormData)
+
+  const handleChange = (event) => {
+    const { name, value } = event.target;
+    setFormData((currentData) => ({
+      ...currentData,
+      [name]: value,
+    }));
+  };
+
+  useEffect(() => {
+    const fetchMembers = async () => {
+      try {
+        const data = await getMembers(projectId, token);
+        setMembers(data);
+      } catch(e) {
+        setError(e.message);
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchMembers();
+  }, [projectId, token]);
+
+  const handleAddMember = async () => {
+    try {
+      const data = await addMember(projectId, token, formData);
+      setMembers((members) => [...members, data]);
+    } catch(e) {
+      setError(e.message);
+    }
+  };
+
+  const handleRemoveMember = async (userId) => {
+    try {
+      await removeMember(projectId, userId, token);
+      setMembers((currentData) => currentData.filter((member) => member.userId !== userId));
+    } catch(e) {
+      setError(e.message);
+    }
+  };
+
   return (
     <div className="rounded-2xl border border-gray-200 bg-white shadow-sm">
       <div className="border-b border-gray-200 px-6 py-5">
