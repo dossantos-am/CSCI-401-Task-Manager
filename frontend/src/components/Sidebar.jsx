@@ -32,6 +32,13 @@ const Sidebar = () => {
         </Link>
       </nav>
 
+      <Link
+        to="/settings"
+        className="mt-auto hover:bg-gray-700 p-2 rounded transition text-sm"
+      >
+        Settings
+      </Link>
+
     </div>
   );
 };

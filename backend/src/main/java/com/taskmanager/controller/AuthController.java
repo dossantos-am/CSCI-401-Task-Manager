@@ -3,9 +3,10 @@ package com.taskmanager.controller;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import com.taskmanager.dto.LoginRequest;
 import com.taskmanager.dto.AuthResponse;
-
+import com.taskmanager.dto.ForgotPasswordRequest;
+import com.taskmanager.dto.LoginRequest;
+import com.taskmanager.dto.ResetPasswordRequest;
 import com.taskmanager.dto.userdto.CreateUserRequest;
 import com.taskmanager.dto.userdto.UserResponse;
 import com.taskmanager.service.UserService;
@@ -29,6 +30,18 @@ public class AuthController {
     public ResponseEntity<AuthResponse> login(@Valid @RequestBody LoginRequest request) {
         return ResponseEntity.ok(
                 userService.loginUser(request.getEmailAddress(), request.getPassword()));
+    }
+
+    @PostMapping("/forgot-password")
+    public ResponseEntity<Void> forgotPassword(@Valid @RequestBody ForgotPasswordRequest request) {
+        userService.forgotPassword(request.getEmailAddress());
+        return ResponseEntity.ok().build();
+    }
+
+    @PostMapping("/reset-password")
+    public ResponseEntity<Void> resetPassword(@Valid @RequestBody ResetPasswordRequest request) {
+        userService.resetPassword(request.getToken(), request.getNewPassword());
+        return ResponseEntity.ok().build();
     }
 
 }

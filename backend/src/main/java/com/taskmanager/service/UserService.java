@@ -21,4 +21,8 @@ public interface UserService {
 
     AuthResponse loginUser(String emailAddress, String password);
 
+    void forgotPassword(String emailAddress);
+
+    void resetPassword(String token, String newPassword);
+
 }
