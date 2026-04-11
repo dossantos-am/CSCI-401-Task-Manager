@@ -1,33 +1,42 @@
 package com.taskmanager.service.impl;
 
+import java.time.Instant;
 import java.util.List;
+import java.util.UUID;
 import java.util.stream.Collectors;
 
-//import org.springframework.security.core.parameters.P;
-import org.springframework.stereotype.Service;
-
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.stereotype.Service;
 
 import com.taskmanager.dto.AuthResponse;
 import com.taskmanager.dto.userdto.CreateUserRequest;
 import com.taskmanager.dto.userdto.UpdateUserRequest;
 import com.taskmanager.dto.userdto.UserResponse;
+import com.taskmanager.entity.PasswordResetToken;
 import com.taskmanager.entity.User;
 import com.taskmanager.exception.ResourceNotFoundException;
 import com.taskmanager.mapper.UserMapper;
+import com.taskmanager.repository.PasswordResetTokenRepo;
 import com.taskmanager.repository.UserRepo;
+import com.taskmanager.service.EmailService;
 import com.taskmanager.service.JwtService;
 import com.taskmanager.service.UserService;
 
-import lombok.AllArgsConstructor;
+import lombok.RequiredArgsConstructor;
 
 @Service
-@AllArgsConstructor
+@RequiredArgsConstructor
 public class UserServiceImpl implements UserService {
 
     private final UserRepo userRepo;
     private final PasswordEncoder passwordEncoder;
     private final JwtService jwtService;
+    private final PasswordResetTokenRepo passwordResetTokenRepo;
+    private final EmailService emailService;
+
+    @Value("${app.frontend.url}")
+    private String frontendUrl;
 
     // Create user REST API
     @Override
@@ -92,6 +101,36 @@ public class UserServiceImpl implements UserService {
 
         String token = jwtService.generateToken(user);
         return new AuthResponse(token, UserMapper.mapToUserResponse(user));
+    }
+
+    @Override
+    public void forgotPassword(String emailAddress) {
+        // Silently return if email not found — avoids leaking whether an account exists
+        userRepo.findByEmailAddress(emailAddress).ifPresent(user -> {
+            String token = UUID.randomUUID().toString();
+            Instant expiresAt = Instant.now().plusSeconds(3600); // 1 hour
+            passwordResetTokenRepo.save(new PasswordResetToken(token, user, expiresAt));
+
+            String resetLink = frontendUrl + "/reset-password?token=" + token;
+            emailService.sendPasswordResetEmail(user.getEmailAddress(), resetLink);
+        });
+    }
+
+    @Override
+    public void resetPassword(String token, String newPassword) {
+        PasswordResetToken resetToken = passwordResetTokenRepo.findByToken(token)
+                .orElseThrow(() -> new ResourceNotFoundException("Invalid or expired reset token"));
+
+        if (resetToken.isUsed() || resetToken.getExpiresAt().isBefore(Instant.now())) {
+            throw new ResourceNotFoundException("Invalid or expired reset token");
+        }
+
+        User user = resetToken.getUser();
+        user.setHashedPassword(passwordEncoder.encode(newPassword));
+        userRepo.save(user);
+
+        resetToken.setUsed(true);
+        passwordResetTokenRepo.save(resetToken);
     }
 
 }
