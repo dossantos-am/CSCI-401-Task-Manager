@@ -93,6 +93,7 @@ const SingleProject = () => {
         />
 
         <div className="space-y-3">
+          
           {taskLoading ? (
             <p className="text-gray-500">Loading tasks...</p>
           ) : taskError ? (
