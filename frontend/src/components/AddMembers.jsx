@@ -6,6 +6,9 @@ const initialFormData = {
   email: ""
 };
 
+const inputClassName =
+  "mt-2 w-full rounded-xl border border-gray-200 bg-white px-4 py-3 text-sm text-gray-900 shadow-sm outline-none transition focus:border-gray-400 focus:ring-2 focus:ring-gray-200";
+
 const AddMembers = ({ projectId, token }) => {
 
   const [members, setMembers] = useState([]);
@@ -54,13 +57,17 @@ const AddMembers = ({ projectId, token }) => {
     }
   };
 
-  return (
-    <div className="rounded-2xl border border-gray-200 bg-white shadow-sm">
-      <div className="border-b border-gray-200 px-6 py-5">
-        <h2 className="text-xl font-bold text-gray-900">Members</h2>
-        <p className="mt-1 text-sm text-gray-500">People with access to this project.</p>
-      </div>
+  if (loading) {
+    return <p className="text-gray-500">Loading project members...</p>;
+  }
 
+  if (error) {
+    return <p className="text-red-500">{error}</p>;
+  }
+
+  let membersContent;
+  if(members.length === 0) {
+    membersContent = (
       <div className="flex flex-col items-center justify-center px-6 py-16 text-center">
         <div className="mb-3 flex h-14 w-14 items-center justify-center rounded-full bg-gray-100">
           <svg
@@ -78,6 +85,70 @@ const AddMembers = ({ projectId, token }) => {
           </svg>
         </div>
         <p className="text-sm font-medium text-gray-500">No members added</p>
+      </div>
+    )
+  }
+  else {
+    membersContent = (
+      <div className="space-y-3 px-6 py-6">
+        {members.map((member) => (
+          <div
+            key={member.userId}
+            className="rounded-xl border border-gray-200 p-4"
+          >
+            <h3 className="text-lg font-semibold text-gray-900">
+              {member.firstName} {member.lastName}
+            </h3>
+
+            <div className="mt-3 space-y-1 text-sm text-gray-500">
+              <p>Email: {member.email}</p>
+              <p>Role: {member.role}</p>
+            </div>
+            <button
+              type="button"
+              onClick={() => handleRemoveMember(member.userId)}
+              className="rounded-xl border border-red-200 px-4 py-3 text-sm font-semibold text-red-600 transition hover:bg-red-50"
+            >
+              Remove
+            </button>
+          </div>
+        ))}
+      </div>
+    );
+  }
+
+  return (
+    <div className="rounded-2xl border border-gray-200 bg-white shadow-sm">
+      <div className="border-b border-gray-200 px-6 py-5">
+        <h2 className="text-xl font-bold text-gray-900">Members</h2>
+        <p className="mt-1 text-sm text-gray-500">People with access to this project.</p>
+      </div>
+      {membersContent}
+      <div className="border-t border-gray-200 px-6 py-5">
+        <input
+          type="email"
+          name="email"
+          value={formData.email}
+          onChange={handleChange}
+          placeholder="Enter email address"
+          className={inputClassName}
+        />
+        <select
+          name="role"
+          value={formData.role}
+          onChange={handleChange}
+          className={inputClassName}
+        >
+          <option value="VIEWER">Viewer</option>
+          <option value="EDITOR">Editor</option>
+        </select>
+        <button
+          type="button"
+          onClick={handleAddMember}
+          className={inputClassName}
+        >
+          Add Member
+        </button>
       </div>
     </div>
   );

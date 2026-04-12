@@ -6,6 +6,9 @@ import com.taskmanager.entity.ProjectMember;
 public class ProjectMemberMapper {
     public static ProjectMemberResponse mapToResponse(ProjectMember projectMember) {
         return new ProjectMemberResponse(
+            projectMember.getUser().getFirstName(),
+            projectMember.getUser().getLastName(),
+            projectMember.getUser().getEmailAddress(),
             projectMember.getId().getProjectId(),
             projectMember.getId().getUserId(),
             projectMember.getRole(),
