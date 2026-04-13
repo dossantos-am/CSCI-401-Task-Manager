@@ -9,7 +9,7 @@ const initialFormData = {
 const inputClassName =
   "mt-2 w-full rounded-xl border border-gray-200 bg-white px-4 py-3 text-sm text-gray-900 shadow-sm outline-none transition focus:border-gray-400 focus:ring-2 focus:ring-gray-200";
 
-const AddMembers = ({ projectId, token }) => {
+const AddMembers = ({ projectId, userId, token }) => {
 
   const [members, setMembers] = useState([]);
   const [loading, setLoading] = useState(true);
@@ -41,7 +41,7 @@ const AddMembers = ({ projectId, token }) => {
 
   const handleAddMember = async () => {
     try {
-      const data = await addMember(projectId, token, formData);
+      const data = await addMember(projectId, userId, token, formData);
       setMembers((members) => [...members, data]);
     } catch(e) {
       setError(e.message);

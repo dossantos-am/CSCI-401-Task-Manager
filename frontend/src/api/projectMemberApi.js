@@ -1,7 +1,7 @@
 import { apiBaseUrl } from "../config";
 
 // Add member
-export const addMember = async (projectId, token, memberData) => {
+export const addMember = async (projectId, userId, token, memberData) => {
     const response = await fetch(
         `${apiBaseUrl}/api/project-members?projectId=${projectId}&userId=${userId}`,
         {
