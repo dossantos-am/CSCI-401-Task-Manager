@@ -10,6 +10,7 @@ import CreateTaskModal from "../components/CreateTaskModal";
 
 const SingleProject = () => {
   const { projectId } = useParams();
+  const { userId } = useParams();
   const { token } = useContext(AuthContext);
   const navigate = useNavigate();
 
@@ -107,7 +108,7 @@ const SingleProject = () => {
         </div>
       </div>
 
-      <AddMembers projectId={projectId} token={token}/>
+      <AddMembers projectId={projectId} userId={userId} token={token}/>
 
       {isCreateTaskOpen && (
         <CreateTaskModal

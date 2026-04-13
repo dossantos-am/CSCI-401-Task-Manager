@@ -24,9 +24,10 @@ public class ProjectMemberController {
     @PostMapping
     public ResponseEntity<ProjectMemberResponse> addMember(
             @RequestParam Long projectId,
+            @RequestParam Long userId,
             @Valid @RequestBody CreateProjectMemberRequest request) {
 
-        ProjectMemberResponse response = projectMemberService.addMember(projectId, request);
+        ProjectMemberResponse response = projectMemberService.addMember(projectId, userId, request);
         return new ResponseEntity<>(response, HttpStatus.CREATED);
     }
 
