@@ -27,7 +27,7 @@ public class ProjectMemberServiceImpl implements ProjectMemberService {
     private final UserRepo userRepo;
 
     @Override
-    public ProjectMemberResponse addMember(Long projectId, CreateProjectMemberRequest request) {
+    public ProjectMemberResponse addMember(Long projectId, Long userId, CreateProjectMemberRequest request) {
         boolean alreadyIsAMember = projectMemberRepo.existsByProject_ProjectIdAndUser_EmailAddress(projectId, request.getEmail());
         if (alreadyIsAMember) {
             throw new IllegalArgumentException("User is already a member of this project");
