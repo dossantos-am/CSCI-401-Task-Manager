@@ -24,11 +24,11 @@ const Sidebar = () => {
           Projects
         </Link>
 
-        <Link 
-          to="/tasks" 
+        <Link
+          to="/calendar"
           className="hover:bg-gray-700 p-2 rounded transition"
         >
-          Tasks
+          Calendar
         </Link>
       </nav>
 

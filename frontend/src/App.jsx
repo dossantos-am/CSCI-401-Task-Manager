@@ -6,7 +6,7 @@ import ResetPassword from "./pages/ResetPassword";
 import ProtectedRoute from "./components/ProtectedRoute";
 import Layout from "./pages/Layout";
 import Dashboard from "./pages/Dashboard";
-import Tasks from "./pages/Tasks";
+import Calendar from "./pages/Calendar";
 import Projects from "./pages/Projects";
 import SingleProject from "./pages/SingleProject";
 
@@ -28,9 +28,10 @@ function App() {
       }
       >
         <Route index element={<Dashboard />} />
-        <Route path="tasks" element={<Tasks />} />
+        <Route path="calendar" element={<Calendar />} />
         <Route path="projects" element={<Projects />} />
         <Route path="projects/:projectId" element={<SingleProject />} />
+        <Route path="settings" element={<div className="p-4">Settings Page (Coming Soon)</div>} />
       </Route>
     </Routes>
   );
