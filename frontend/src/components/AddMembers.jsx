@@ -2,7 +2,7 @@ import { useEffect, useState } from "react";
 import { getMembers, addMember, removeMember } from "../api/projectMemberApi";
 
 const initialFormData = {
-  role: "",
+  role: "VIEWER",
   email: ""
 };
 
