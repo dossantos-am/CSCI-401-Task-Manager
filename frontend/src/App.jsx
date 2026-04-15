@@ -9,6 +9,7 @@ import Dashboard from "./pages/Dashboard";
 import Calendar from "./pages/Calendar";
 import Projects from "./pages/Projects";
 import SingleProject from "./pages/SingleProject";
+import Settings from "./pages/Settings";
 
 function App() {
   return (
@@ -31,7 +32,7 @@ function App() {
         <Route path="calendar" element={<Calendar />} />
         <Route path="projects" element={<Projects />} />
         <Route path="projects/:projectId" element={<SingleProject />} />
-        <Route path="settings" element={<div className="p-4">Settings Page (Coming Soon)</div>} />
+        <Route path="settings" element={<Settings />} />
       </Route>
     </Routes>
   );

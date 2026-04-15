@@ -5,6 +5,7 @@ import CreateProjectModal from "../components/CreateProjectModal";
 import SuccessToast from "../components/SuccessToast";
 import { capitalizeName } from "../utils/formatters";
 import { getProjects } from "../api/projectApi";
+import SummaryBoxes from "../components/SummaryBoxes";
 
 const statusStyle = (status) => {
   if (status === "COMPLETED") return "text-blue-600 font-semibold";
@@ -61,24 +62,7 @@ const Dashboard = () => {
           </button>
         </div>
 
-        <div className="grid grid-cols-3 gap-4">
-          <div className="rounded-xl border border-blue-200 bg-blue-50 p-4 shadow-sm">
-            <p className="text-sm font-medium text-blue-600">Total Projects</p>
-            <p className="mt-1 text-3xl font-bold text-blue-700">{projects.length}</p>
-          </div>
-          <div className="rounded-xl border border-green-200 bg-green-50 p-4 shadow-sm">
-            <p className="text-sm font-medium text-green-600">Completed</p>
-            <p className="mt-1 text-3xl font-bold text-green-700">
-              {projects.filter((p) => p.status === "COMPLETED").length}
-            </p>
-          </div>
-          <div className="rounded-xl border border-yellow-200 bg-yellow-50 p-4 shadow-sm">
-            <p className="text-sm font-medium text-yellow-600">Overdue</p>
-            <p className="mt-1 text-3xl font-bold text-yellow-700">
-              {projects.filter((p) => p.status !== "COMPLETED" && p.dueDate && new Date(p.dueDate) < new Date()).length}
-            </p>
-          </div>
-        </div>
+        <SummaryBoxes projects={projects} />
 
         <section className="rounded-xl border border-gray-200 shadow-sm">
           <div className="rounded-t-xl border-b border-gray-200 bg-gray-50 px-5 py-3">
@@ -94,7 +78,26 @@ const Dashboard = () => {
               <p className="text-gray-500">No projects found.</p>
             ) : (
               <div className="space-y-3">
-                {projects.map((project) => (
+                {projects.filter((project) => project.status !== "COMPLETED").map((project) => (
+                  
+                  <button
+                    key={project.projectId}
+                    onClick={() => navigate(`/projects/${project.projectId}`)}
+                    className="w-full text-left rounded-lg border border-gray-200 p-4 hover:bg-gray-200"
+                  >
+                    <h3 className="text-base font-semibold">{project.name}</h3>
+                    <p className="mt-1 text-sm text-gray-600">{project.description}</p>
+                    <div className="mt-3 flex items-end justify-between text-sm">
+                      <span className="text-gray-500">
+                        Due: {project.dueDate ?? "—"}
+                      </span>
+                      <span className={statusStyle(project.status)}>
+                        {project.status}
+                      </span>
+                    </div>
+                  </button>
+                ))}
+                {projects.filter((project) => project.status == "COMPLETED").map((project) => (
                   
                   <button
                     key={project.projectId}
@@ -117,6 +120,7 @@ const Dashboard = () => {
             )}
           </div>
         </section>
+        
       </div>
 
       {isCreateProjectOpen ? (
