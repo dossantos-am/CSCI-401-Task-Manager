@@ -86,9 +86,9 @@ public class ProjectServiceImpl implements ProjectService{
     public List<ProjectResponse> getProjectsByUser(String email) {
         User user = userRepo.findByEmailAddress(email).orElseThrow(
             () -> new ResourceNotFoundException("User does not exist for email: " + email));
-        List<Project> projects = projectRepo.findByCreatedBy(user);
-        return projects.stream()
-                .map((project) -> ProjectMapper.mapToProjectResponse(project))
+        List<ProjectMember> memberships = projectMemberRepo.findByUser_UserId(user.getUserId());
+        return memberships.stream()
+                .map((membership) -> ProjectMapper.mapToProjectResponse(membership.getProject()))
                 .collect(Collectors.toList());
     }
 
