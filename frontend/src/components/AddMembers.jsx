@@ -1,5 +1,6 @@
 import { useEffect, useState } from "react";
 import { getMembers, addMember, removeMember } from "../api/projectMemberApi";
+import { capitalizeName } from "../utils/formatters";
 
 const initialFormData = {
   role: "VIEWER",
@@ -97,7 +98,7 @@ const AddMembers = ({ projectId, userId, token }) => {
             className="rounded-xl border border-gray-200 p-4"
           >
             <h3 className="text-lg font-semibold text-gray-900">
-              {member.firstName} {member.lastName}
+              {capitalizeName(member.firstName)} {capitalizeName(member.lastName)}
             </h3>
 
             <div className="mt-3 space-y-1 text-sm text-gray-500">
