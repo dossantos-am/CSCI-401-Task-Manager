@@ -104,6 +104,8 @@ const AddMembers = ({ projectId, userId, token }) => {
               <p>Email: {member.email}</p>
               <p>Role: {member.role}</p>
             </div>
+            
+            {member.role === "OWNER" ? null :
             <button
               type="button"
               onClick={() => handleRemoveMember(member.userId)}
@@ -111,6 +113,7 @@ const AddMembers = ({ projectId, userId, token }) => {
             >
               Remove
             </button>
+  }
           </div>
         ))}
       </div>

@@ -44,6 +44,7 @@ public class ProjectMember {
     public ProjectMemberRole getRole() { return role; }
     public Instant getJoinedAt() { return joinedAt; }
     public User getUser() { return user; }
+    public Project getProject() { return project; }
 
     // Setter
     public void setRole(ProjectMemberRole role) { this.role = role; }
