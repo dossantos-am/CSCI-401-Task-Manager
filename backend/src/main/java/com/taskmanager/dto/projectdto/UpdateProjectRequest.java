@@ -8,6 +8,7 @@ import java.time.LocalDate;
 
 import com.taskmanager.entity.ProjectStatus;
 
+import jakarta.annotation.Nullable;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 
@@ -21,7 +22,7 @@ public class UpdateProjectRequest {
     @NotBlank
     private String name;
 
-    @NotBlank
+    @Nullable
     private String description;
 
     @NotNull
