@@ -1,3 +1,5 @@
+import { capitalizeName } from "../utils/formatters";
+
 const TaskList = ({ tasks, onCreateTask }) => {
   return (
     <div className="rounded-2xl border border-gray-200 bg-white shadow-sm">
@@ -42,7 +44,7 @@ const TaskList = ({ tasks, onCreateTask }) => {
               key={task.taskId}
               className="rounded-xl border border-gray-200 p-4"
             >
-              <h3 className="text-lg font-semibold text-gray-900">{task.title}</h3>
+              <h3 className="text-lg font-semibold text-gray-900">{capitalizeName(task.title)}</h3>
               <p className="mt-1 text-sm text-gray-600">
                 {task.description || "No description"}
               </p>

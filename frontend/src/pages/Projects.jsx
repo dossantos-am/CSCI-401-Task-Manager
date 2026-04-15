@@ -69,7 +69,7 @@ const Projects = () => {
                 onClick={() => navigate(`/projects/${project.projectId}`)}
                 className="w-full rounded-lg border p-4 text-left hover:bg-gray-200"
               >
-                <h2 className="text-xl font-semibold">{project.name}</h2>
+                <h2 className="text-xl font-semibold">{capitalizeName(project.name)}</h2>
                 <p>{project.description}</p>
                 <div className="mt-2 text-sm">
                   <p>Owner: {capitalizeName(project.createdByName)}</p>
