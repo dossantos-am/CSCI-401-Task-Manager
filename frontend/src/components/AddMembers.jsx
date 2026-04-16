@@ -34,7 +34,7 @@ const AddMembers = ({ projectId, userId, token }) => {
         setError(e.message);
       } finally {
         setLoading(false);
-      }
+      } 
     };
 
     fetchMembers();
