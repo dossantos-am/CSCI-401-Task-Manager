@@ -67,3 +67,21 @@ export const deleteTask = async (taskId, token) => {
 
     if(!response.ok) { throw new Error(await response.text()); }
 };
+
+export const assignTask = async (taskId, email, token) => {
+    const response = await fetch(
+        `${apiBaseUrl}/api/tasks/${taskId}/assign`,
+        {
+            method: "PUT",
+            headers: {
+                "Content-Type": "application/json",
+                Authorization: `Bearer ${token}`,
+            },
+            body: JSON.stringify({ email: email }),
+        }
+    );
+    
+    if(!response.ok) { throw new Error(await response.text()); }
+
+    return response.json();
+};

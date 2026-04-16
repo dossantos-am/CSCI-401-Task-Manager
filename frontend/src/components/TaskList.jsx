@@ -50,8 +50,8 @@ const TaskList = ({ tasks, onCreateTask }) => {
               </p>
 
               <div className="mt-3 space-y-1 text-sm text-gray-500">
-                <p>Status: {task.status}</p>
                 <p>Due: {task.dueDate || "No due date"}</p>
+                <p>Status: {task.status}</p>
                 <p>Assigned to: {task.assignedToName || "Unassigned"}</p> 
               </div>
             </div>
