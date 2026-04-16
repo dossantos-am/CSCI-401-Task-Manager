@@ -85,7 +85,7 @@ const Dashboard = () => {
                     onClick={() => navigate(`/projects/${project.projectId}`)}
                     className="w-full text-left rounded-lg border border-gray-200 p-4 hover:bg-gray-200"
                   >
-                    <h3 className="text-base font-semibold">{capitalizeName(project.name)}</h3>
+                    <h3 className="text-base font-semibold">{(project.name)}</h3>
                     <p className="mt-1 text-sm text-gray-600">{project.description}</p>
                     <div className="mt-3 flex items-end justify-between text-sm">
                       <span className="text-gray-500">
