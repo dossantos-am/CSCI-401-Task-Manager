@@ -2,11 +2,12 @@ import { useContext, useEffect, useState } from "react";
 import { useParams, useNavigate } from "react-router-dom";
 import { AuthContext } from "../context/AuthContext";
 import { getTasksByProjectId } from "../api/taskApi";
-import { getProjectByProjectId } from "../api/projectApi";
+import { getProjectByProjectId, deleteProject } from "../api/projectApi";
 import ProjectInfo from "../components/ProjectInfo";
 import TaskList from "../components/TaskList";
 import AddMembers from "../components/AddMembers";
 import CreateTaskModal from "../components/CreateTaskModal";
+import ConfirmModal from "../components/ConfirmModal";
 
 const SingleProject = () => {
   const { projectId } = useParams();
@@ -20,6 +21,7 @@ const SingleProject = () => {
   const [error, setError] = useState(null);
   const [taskError, setTaskError] = useState(null);
   const [isCreateTaskOpen, setIsCreateTaskOpen] = useState(false);
+  const [deleteProjectModal, setDeleteProjectModal] = useState(false);
 
   useEffect(() => {
     const fetchProject = async () => {
@@ -52,6 +54,15 @@ const SingleProject = () => {
 
       fetchTasks();
     }, [projectId, token]);
+
+    const handleDeleteProject = async () => {
+      try {
+        await deleteProject(projectId, token);
+        navigate("/");
+      } catch(e) {
+        setError(e.message);
+      }
+    };
 
   if (loading) {
     return <p className="text-gray-500">Loading project...</p>;
@@ -118,6 +129,22 @@ const SingleProject = () => {
           }}
         />
       )}
+
+      <div className="flex flex-col-reverse gap-3 border-t border-gray-200 pt-5 sm:flex-row sm:justify-end">
+        <button
+          type="button"
+          onClick={() => setDeleteProjectModal(true)}
+          className="rounded-xl border border-black-200 px-5 py-3 text-sm font-semibold text-red-700 transition hover:bg-gray-100"
+        >
+          Delete Project
+        </button>
+          <ConfirmModal
+            isOpen={deleteProjectModal}
+            setIsOpen={setDeleteProjectModal}
+            onConfirm={handleDeleteProject}
+            itemName="project"
+          />
+      </div>
     </div>
   );
 };
