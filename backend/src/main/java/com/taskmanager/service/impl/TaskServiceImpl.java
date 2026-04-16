@@ -13,6 +13,7 @@ import com.taskmanager.entity.Task;
 import com.taskmanager.entity.User;
 import com.taskmanager.exception.ResourceNotFoundException;
 import com.taskmanager.mapper.TaskMapper;
+import com.taskmanager.repository.ProjectMemberRepo;
 import com.taskmanager.repository.ProjectRepo;
 import com.taskmanager.repository.TaskRepo;
 import com.taskmanager.repository.UserRepo;
@@ -25,6 +26,7 @@ import lombok.AllArgsConstructor;
 public class TaskServiceImpl implements TaskService {
 
     private ProjectRepo projectRepo;
+    private ProjectMemberRepo projectMemberRepo;
     private TaskRepo taskRepo;
     private UserRepo userRepo;
 
@@ -81,12 +83,18 @@ public class TaskServiceImpl implements TaskService {
     }
 
     @Override
-    public TaskResponse assignTask(Long taskId, Long userId) {
+    public TaskResponse assignTask(Long taskId, String email) {
         Task task = taskRepo.findById(taskId)
             .orElseThrow(() -> new ResourceNotFoundException("Task not found: " + taskId));
 
-        User user = userRepo.findById(userId)
-            .orElseThrow(() -> new ResourceNotFoundException("User not found: " + userId));
+        User user = userRepo.findByEmailAddress(email)
+            .orElseThrow(() -> new ResourceNotFoundException("User not found: " + email));
+
+        Project project = task.getProject();
+
+        if(!projectMemberRepo.existsByProject_ProjectIdAndUser_EmailAddress(project.getProjectId(), email)) {
+            throw new IllegalArgumentException("User is not a member of this project");
+        }
 
         task.setAssignedTo(user);
 

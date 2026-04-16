@@ -1,12 +1,14 @@
-import { useContext, useState } from "react";
+import { useContext, useState, useEffect } from "react";
 import { AuthContext } from "../context/AuthContext";
-import { createTask } from "../api/taskApi";
+import { assignTask, createTask } from "../api/taskApi";
+import { getMembers } from  "../api/projectMemberApi";
 
 const initialFormData = {
     title: "",
     description: "",
     status: "TODO",
     dueDate: "",
+    assignedTo: "",
 };
 
 const inputClassName =
@@ -14,9 +16,9 @@ const inputClassName =
 
 const CreateTaskModal = ({ projectId, onClose, onTaskCreated }) => {
     const { token } = useContext(AuthContext);
-
     const [formData, setFormData] = useState(initialFormData);
     const [error, setError] = useState(null);
+    const [members, setMembers] = useState([]);
 
     const handleChange = (event) => {
         const { name, value } = event.target;
@@ -39,12 +41,33 @@ const CreateTaskModal = ({ projectId, onClose, onTaskCreated }) => {
             };
 
             const newTask = await createTask(projectId, token, payload);
-            onTaskCreated(newTask);
+            console.log("assignedTo:", formData.assignedTo);
+            if(formData.assignedTo != "") {
+                const assignedTask = await assignTask(newTask.taskId, formData.assignedTo, token);
+                onTaskCreated(assignedTask)
+            }
+            else {
+                onTaskCreated(newTask);
+            }
+
             onClose();
         } catch (e) {
             setError(e.message);
         }
     };
+
+    useEffect(() => {
+    const fetchMembers = async () => {
+        try {
+        const data = await getMembers(projectId, token);
+        setMembers(data);
+        } catch(e) {
+        setError(e.message);
+        }
+    };
+
+    fetchMembers();
+    }, [projectId, token]);
 
     return (
         <div className="fixed inset-0 z-50 flex min-h-screen items-center justify-center overflow-y-auto bg-gray-950/35 p-4 backdrop-blur-sm sm:p-6">
@@ -113,11 +136,26 @@ const CreateTaskModal = ({ projectId, onClose, onTaskCreated }) => {
                                 className={inputClassName}
                             >
                                 <option value="TODO">To Do</option>
-                                <option value="IN_PROGRESS"> In Progress</option>
+                                <option value="IN_PROGRESS">In Progress</option>
                                 <option value="DONE">Done</option>
                             </select>
                         </label>
                     </div>
+
+                    <label className="block text-sm font-semibold text-gray-700">
+                        Add Members
+                        <select
+                            name="assignedTo"
+                            value={formData.assignedTo}
+                            onChange={handleChange}
+                            className={inputClassName}
+                        >
+                            <option key="defualt" value="">Select a member</option>
+                            {members.map((member) => (
+                                <option key={member.email} value={member.email}>{member.firstName} {member.lastName}</option>
+                            ))}
+                        </select>
+                    </label>
 
                     {error && <p className="text-sm text-red-500">{error}</p>}
 

@@ -14,6 +14,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.taskmanager.dto.taskdto.AssignTaskRequest;
 import com.taskmanager.dto.taskdto.CreateTaskRequest;
 import com.taskmanager.dto.taskdto.TaskResponse;
 import com.taskmanager.dto.taskdto.UpdateTaskRequest;
@@ -55,8 +56,8 @@ public class TaskController {
     @PutMapping("/{taskId}/assign")
     public ResponseEntity<TaskResponse> assignTask( 
         @PathVariable Long taskId,
-        @RequestParam Long userId) {
-        TaskResponse updatedTask = taskService.assignTask(taskId, userId);
+        @Valid @RequestBody AssignTaskRequest request) {
+        TaskResponse updatedTask = taskService.assignTask(taskId, request.getEmail());
         return ResponseEntity.ok(updatedTask);
     }
 
