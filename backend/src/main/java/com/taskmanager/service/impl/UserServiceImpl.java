@@ -73,7 +73,7 @@ public class UserServiceImpl implements UserService {
 
         user.setFirstName(request.getFirstName());
         user.setLastName(request.getLastName());
-        user.setEmailAddress(request.getEmailAddress());
+        user.setEmailAddress(request.getEmailAddress().trim().toLowerCase());
 
         User updatedUserObj = userRepo.save(user);
 
@@ -92,7 +92,7 @@ public class UserServiceImpl implements UserService {
     // Login user REST API
     @Override
     public AuthResponse loginUser(String emailAddress, String password) {
-        User user = userRepo.findByEmailAddress(emailAddress)
+        User user = userRepo.findByEmailAddress(emailAddress.trim().toLowerCase())
                 .orElseThrow(() -> new ResourceNotFoundException("Invalid email or password"));
 
         if (!passwordEncoder.matches(password, user.getHashedPassword())) {
@@ -106,7 +106,7 @@ public class UserServiceImpl implements UserService {
     @Override
     public void forgotPassword(String emailAddress) {
         // Silently return if email not found — avoids leaking whether an account exists
-        userRepo.findByEmailAddress(emailAddress).ifPresent(user -> {
+        userRepo.findByEmailAddress(emailAddress.trim().toLowerCase()).ifPresent(user -> {
             String token = UUID.randomUUID().toString();
             Instant expiresAt = Instant.now().plusSeconds(3600); // 1 hour
             passwordResetTokenRepo.save(new PasswordResetToken(token, user, expiresAt));

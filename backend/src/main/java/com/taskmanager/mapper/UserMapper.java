@@ -19,7 +19,7 @@ public class UserMapper {
         User user = new User();
         user.setFirstName(request.getFirstName());
         user.setLastName(request.getLastName());
-        user.setEmailAddress(request.getEmailAddress());
+        user.setEmailAddress(request.getEmailAddress().trim().toLowerCase());
         return user;
     }
 }
