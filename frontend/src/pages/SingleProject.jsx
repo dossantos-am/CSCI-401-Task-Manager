@@ -142,7 +142,7 @@ const SingleProject = () => {
             isOpen={deleteProjectModal}
             setIsOpen={setDeleteProjectModal}
             onConfirm={handleDeleteProject}
-            itemName="project"
+            itemName="Are you sure you want to delete this project?"
           />
       </div>
     </div>
