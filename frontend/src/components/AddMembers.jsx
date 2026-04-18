@@ -97,17 +97,19 @@ const AddMembers = ({ projectId, userId, token }) => {
         {members.map((member) => (
           <div
             key={member.userId}
-            className="rounded-xl border border-gray-200 p-4"
+            className="rounded-xl border border-gray-200 p-4 flex justify-between items-center"
           >
-            <h3 className="text-lg font-semibold text-gray-900">
-              {capitalizeName(member.firstName)} {capitalizeName(member.lastName)}
-            </h3>
+            <div>
+              <h3 className="text-lg font-semibold text-gray-900">
+                {capitalizeName(member.firstName)} {capitalizeName(member.lastName)}
+              </h3>
 
-            <div className="mt-3 space-y-1 text-sm text-gray-500">
-              <p>Email: {member.email}</p>
-              <p>Role: {member.role}</p>
+              <div className="mt-3 space-y-1 text-sm text-gray-500">
+                <p>Email: {member.email}</p>
+                <p>Role: {member.role}</p>
+              </div>
             </div>
-            
+
             {member.role === "OWNER" ? null : (
               <>
                 <button
