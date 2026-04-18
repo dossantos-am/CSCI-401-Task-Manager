@@ -1,7 +1,8 @@
 import { useEffect, useState } from "react";
-import { getMembers, addMember, removeMember } from "../api/projectMemberApi";
+import { getMembers, addMember, removeMember, editMembership } from "../api/projectMemberApi";
 import { capitalizeName } from "../utils/formatters";
 import ConfirmModal from "./ConfirmModal";
+import EditMemberModal from "./EditMemberModal";
 
 const initialFormData = {
   role: "VIEWER",
@@ -18,6 +19,7 @@ const AddMembers = ({ projectId, userId, token }) => {
   const [error, setError] = useState(null);
   const [formData, setFormData]  = useState(initialFormData);
   const [memberToRemove, setMemberToRemove] = useState(null);
+  const [memberToEdit, setMemberToEdit] = useState(null);
 
   const handleChange = (event) => {
     const { name, value } = event.target;
@@ -55,6 +57,20 @@ const AddMembers = ({ projectId, userId, token }) => {
     try {
       await removeMember(projectId, userId, token);
       setMembers((currentData) => currentData.filter((member) => member.userId !== userId));
+    } catch(e) {
+      setError(e.message);
+    }
+  };
+
+  const handleEditMembership = async (userId, currentRole) => {
+    const newRole = currentRole === "EDITOR" ? "VIEWER" : "EDITOR"
+    try {
+      await editMembership(projectId, userId, token, { role: newRole });
+      setMembers((currentMembers) => 
+        currentMembers.map((member) => 
+          member.userId === userId ? { ...member, role: newRole} : member
+        )
+      );
     } catch(e) {
       setError(e.message);
     }
@@ -111,7 +127,20 @@ const AddMembers = ({ projectId, userId, token }) => {
             </div>
 
             {member.role === "OWNER" ? null : (
-              <>
+              <div className="flex flex-col gap-2">
+                <button
+                  type="button"
+                  onClick={() => setMemberToEdit(member.userId)}
+                  className="rounded-xl border border-gray-200 px-4 py-3 text-sm font-semibold text-gray-600 transition hover:bg-red-50"
+                >
+                  Edit
+                </button>
+                  <EditMemberModal
+                    isOpen={memberToEdit === member.userId}
+                    setIsOpen={setMemberToEdit}
+                    onConfirm={() => handleEditMembership(member.userId, member.role)}
+                    member={member}
+                  />
                 <button
                   type="button"
                   onClick={() => setMemberToRemove(member.userId)}
@@ -120,12 +149,13 @@ const AddMembers = ({ projectId, userId, token }) => {
                   Remove
                 </button>
                   <ConfirmModal
-                    isOpen={memberToRemove}
+                    isOpen={memberToRemove === member.userId}
                     setIsOpen={setMemberToRemove}
-                    onConfirm={handleRemoveMember}
+                    onConfirm={() => handleRemoveMember(member.userId)}
                     itemName="Are you sure you want to remove this member from the project?"
+                    buttonName="Remove"
                   />
-              </>
+              </div>
             )
   }
           </div>
