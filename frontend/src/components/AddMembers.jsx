@@ -1,6 +1,8 @@
 import { useEffect, useState } from "react";
-import { getMembers, addMember, removeMember } from "../api/projectMemberApi";
+import { getMembers, addMember, removeMember, editMembership } from "../api/projectMemberApi";
 import { capitalizeName } from "../utils/formatters";
+import ConfirmModal from "./ConfirmModal";
+import EditMemberModal from "./EditMemberModal";
 
 const initialFormData = {
   role: "VIEWER",
@@ -15,7 +17,9 @@ const AddMembers = ({ projectId, userId, token }) => {
   const [members, setMembers] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
-  const [formData, setFormData]  = useState(initialFormData)
+  const [formData, setFormData]  = useState(initialFormData);
+  const [memberToRemove, setMemberToRemove] = useState(null);
+  const [memberToEdit, setMemberToEdit] = useState(null);
 
   const handleChange = (event) => {
     const { name, value } = event.target;
@@ -58,6 +62,20 @@ const AddMembers = ({ projectId, userId, token }) => {
     }
   };
 
+  const handleEditMembership = async (userId, currentRole) => {
+    const newRole = currentRole === "EDITOR" ? "VIEWER" : "EDITOR"
+    try {
+      await editMembership(projectId, userId, token, { role: newRole });
+      setMembers((currentMembers) => 
+        currentMembers.map((member) => 
+          member.userId === userId ? { ...member, role: newRole} : member
+        )
+      );
+    } catch(e) {
+      setError(e.message);
+    }
+  };
+
   if (loading) {
     return <p className="text-gray-500">Loading project members...</p>;
   }
@@ -95,25 +113,50 @@ const AddMembers = ({ projectId, userId, token }) => {
         {members.map((member) => (
           <div
             key={member.userId}
-            className="rounded-xl border border-gray-200 p-4"
+            className="rounded-xl border border-gray-200 p-4 flex justify-between items-center"
           >
-            <h3 className="text-lg font-semibold text-gray-900">
-              {capitalizeName(member.firstName)} {capitalizeName(member.lastName)}
-            </h3>
+            <div>
+              <h3 className="text-lg font-semibold text-gray-900">
+                {capitalizeName(member.firstName)} {capitalizeName(member.lastName)}
+              </h3>
 
-            <div className="mt-3 space-y-1 text-sm text-gray-500">
-              <p>Email: {member.email}</p>
-              <p>Role: {member.role}</p>
+              <div className="mt-3 space-y-1 text-sm text-gray-500">
+                <p>Email: {member.email}</p>
+                <p>Role: {member.role}</p>
+              </div>
             </div>
-            
-            {member.role === "OWNER" ? null :
-            <button
-              type="button"
-              onClick={() => handleRemoveMember(member.userId)}
-              className="rounded-xl border border-red-200 px-4 py-3 text-sm font-semibold text-red-600 transition hover:bg-red-50"
-            >
-              Remove
-            </button>
+
+            {member.role === "OWNER" ? null : (
+              <div className="flex flex-col gap-2">
+                <button
+                  type="button"
+                  onClick={() => setMemberToEdit(member.userId)}
+                  className="rounded-xl border border-gray-200 px-4 py-3 text-sm font-semibold text-gray-600 transition hover:bg-red-50"
+                >
+                  Edit
+                </button>
+                  <EditMemberModal
+                    isOpen={memberToEdit === member.userId}
+                    setIsOpen={setMemberToEdit}
+                    onConfirm={() => handleEditMembership(member.userId, member.role)}
+                    member={member}
+                  />
+                <button
+                  type="button"
+                  onClick={() => setMemberToRemove(member.userId)}
+                  className="rounded-xl border border-red-200 px-4 py-3 text-sm font-semibold text-red-600 transition hover:bg-red-50"
+                >
+                  Remove
+                </button>
+                  <ConfirmModal
+                    isOpen={memberToRemove === member.userId}
+                    setIsOpen={setMemberToRemove}
+                    onConfirm={() => handleRemoveMember(member.userId)}
+                    itemName="Are you sure you want to remove this member from the project?"
+                    buttonName="Remove"
+                  />
+              </div>
+            )
   }
           </div>
         ))}
