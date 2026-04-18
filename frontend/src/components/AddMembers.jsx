@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 import { getMembers, addMember, removeMember } from "../api/projectMemberApi";
 import { capitalizeName } from "../utils/formatters";
+import ConfirmModal from "./ConfirmModal";
 
 const initialFormData = {
   role: "VIEWER",
@@ -15,7 +16,8 @@ const AddMembers = ({ projectId, userId, token }) => {
   const [members, setMembers] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
-  const [formData, setFormData]  = useState(initialFormData)
+  const [formData, setFormData]  = useState(initialFormData);
+  const [memberToRemove, setMemberToRemove] = useState(null);
 
   const handleChange = (event) => {
     const { name, value } = event.target;
@@ -106,14 +108,23 @@ const AddMembers = ({ projectId, userId, token }) => {
               <p>Role: {member.role}</p>
             </div>
             
-            {member.role === "OWNER" ? null :
-            <button
-              type="button"
-              onClick={() => handleRemoveMember(member.userId)}
-              className="rounded-xl border border-red-200 px-4 py-3 text-sm font-semibold text-red-600 transition hover:bg-red-50"
-            >
-              Remove
-            </button>
+            {member.role === "OWNER" ? null : (
+              <>
+                <button
+                  type="button"
+                  onClick={() => setMemberToRemove(member.userId)}
+                  className="rounded-xl border border-red-200 px-4 py-3 text-sm font-semibold text-red-600 transition hover:bg-red-50"
+                >
+                  Remove
+                </button>
+                  <ConfirmModal
+                    isOpen={memberToRemove}
+                    setIsOpen={setMemberToRemove}
+                    onConfirm={handleRemoveMember}
+                    itemName="Are you sure you want to remove this member from the project?"
+                  />
+              </>
+            )
   }
           </div>
         ))}
