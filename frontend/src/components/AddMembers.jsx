@@ -17,6 +17,7 @@ const AddMembers = ({ projectId, userId, token }) => {
   const [members, setMembers] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
+  const [addMemberError, setAddMemberError] = useState(null);
   const [formData, setFormData]  = useState(initialFormData);
   const [memberToRemove, setMemberToRemove] = useState(null);
   const [memberToEdit, setMemberToEdit] = useState(null);
@@ -49,7 +50,7 @@ const AddMembers = ({ projectId, userId, token }) => {
       const data = await addMember(projectId, userId, token, formData);
       setMembers((members) => [...members, data]);
     } catch(e) {
-      setError(e.message);
+      setAddMemberError(e.message);
     }
   };
 
@@ -189,6 +190,7 @@ const AddMembers = ({ projectId, userId, token }) => {
           <option value="VIEWER">Viewer</option>
           <option value="EDITOR">Editor</option>
         </select>
+        {addMemberError && <p className="text-red-500 text-sm">{addMemberError}</p>}
         <button
           type="button"
           onClick={handleAddMember}
