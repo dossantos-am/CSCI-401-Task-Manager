@@ -5,6 +5,7 @@ import { capitalizeName } from "../utils/formatters";
 import { getProjects } from "../api/projectApi"
 import CreateProjectModal from "../components/CreateProjectModal";
 import SuccessToast from "../components/SuccessToast";
+import { useSearchParams } from "react-router-dom";
 
 const Projects = () => {
   const { token } = useContext(AuthContext);
@@ -14,6 +15,10 @@ const Projects = () => {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
   const [showSuccessToast, setShowSuccessToast] = useState(false);
+  const [searchParams] = useSearchParams();
+  const searchQuery = searchParams.get("search") || "";
+
+
 
   useEffect(() => {
     const fetchProjects = async () => {
@@ -28,6 +33,11 @@ const Projects = () => {
     };
     fetchProjects();
   }, [token]);
+
+  const filteredProjects = projects.filter(p =>
+    p.name.toLowerCase().includes(searchQuery.toLowerCase()) ||
+    p.description?.toLowerCase().includes(searchQuery.toLowerCase())
+);
 
   const handleProjectCreated = (newProject) => {
     setProjects((prev) => [newProject, ...prev]);
@@ -60,9 +70,11 @@ const Projects = () => {
           <p className="text-red-500">{error}</p>
         ) : projects.length === 0 ? (
           <p>No projects found.</p>
+        ) : filteredProjects.length === 0 ? (
+          <p>No projects match "{searchQuery}".</p>
         ) : (
           <div className="space-y-3">
-            {projects.map((project) => (
+            {filteredProjects.map((project) => (
               <button
                 key={project.projectId}
                 type="button"
