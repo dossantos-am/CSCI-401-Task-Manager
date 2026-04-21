@@ -7,7 +7,7 @@ const inputClassName =
 
 const STATUS_OPTIONS = ["ACTIVE", "COMPLETED", "ARCHIVED"];
 
-const ProjectInfo = ({ project, onProjectUpdated }) => {
+const ProjectInfo = ({ project, onProjectUpdated, canEdit }) => {
   const { token } = useContext(AuthContext);
 
   const [formData, setFormData] = useState({
@@ -51,6 +51,7 @@ const ProjectInfo = ({ project, onProjectUpdated }) => {
       </div>
 
       <form onSubmit={handleSubmit} className="space-y-5 px-6 py-6">
+        {!canEdit && <p className="text-sm text-gray-400">You have view-only access.</p>}
         <label className="block text-sm font-semibold text-gray-700">
           Project Name
           <input
@@ -120,15 +121,17 @@ const ProjectInfo = ({ project, onProjectUpdated }) => {
         {error && <p className="text-sm text-red-500">{error}</p>}
         {saved && <p className="text-sm text-green-600">Changes saved.</p>}
 
-        <div className="border-t border-gray-200 pt-5">
-          <button
-            type="submit"
-            disabled={saving}
-            className="w-full rounded-xl bg-gray-900 px-5 py-3 text-sm font-semibold text-white transition hover:bg-gray-700 disabled:opacity-60"
-          >
-            {saving ? "Saving…" : "Save Changes"}
-          </button>
-        </div>
+        {canEdit && (
+          <div className="border-t border-gray-200 pt-5">
+            <button
+              type="submit"
+              disabled={saving}
+              className="w-full rounded-xl bg-gray-900 px-5 py-3 text-sm font-semibold text-white transition hover:bg-gray-700 disabled:opacity-60"
+            >
+              {saving ? "Saving…" : "Save Changes"}
+            </button>
+          </div>
+        )}
       </form>
     </div>
   );

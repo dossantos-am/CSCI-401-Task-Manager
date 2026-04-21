@@ -3,6 +3,7 @@ import { useParams, useNavigate } from "react-router-dom";
 import { AuthContext } from "../context/AuthContext";
 import { getTasksByProjectId } from "../api/taskApi";
 import { getProjectByProjectId, deleteProject } from "../api/projectApi";
+import { getMembers } from "../api/projectMemberApi";
 import ProjectInfo from "../components/ProjectInfo";
 import TaskList from "../components/TaskList";
 import AddMembers from "../components/AddMembers";
@@ -20,8 +21,13 @@ const SingleProject = () => {
   const [taskLoading, setTaskLoading] = useState(true);
   const [error, setError] = useState(null);
   const [taskError, setTaskError] = useState(null);
+  const [members, setMembers] = useState([]);
+  const [membersLoading, setMembersLoading] = useState(true);
   const [isCreateTaskOpen, setIsCreateTaskOpen] = useState(false);
   const [deleteProjectModal, setDeleteProjectModal] = useState(false);
+
+  const currentUserRole = members.find((m) => m.userId === user.userId)?.role;
+  const canEdit = currentUserRole === "EDITOR" || currentUserRole === "OWNER";
 
   useEffect(() => {
     const fetchProject = async () => {
@@ -54,6 +60,18 @@ const SingleProject = () => {
 
       fetchTasks();
     }, [projectId, token]);
+
+  useEffect(() => {
+    const fetchMembers = async () => {
+      try {
+        const data = await getMembers(projectId, token);
+        setMembers(data);
+      } finally {
+        setMembersLoading(false);
+      }
+    };
+    fetchMembers();
+  }, [projectId, token]);
 
     const handleDeleteProject = async () => {
       try {
@@ -101,6 +119,7 @@ const SingleProject = () => {
         <ProjectInfo
           project={project}
           onProjectUpdated={(updated) => setProject(updated)}
+          canEdit={canEdit}
         />
 
         <div className="space-y-3">
@@ -113,12 +132,22 @@ const SingleProject = () => {
             <TaskList
               tasks={tasks}
               onCreateTask={() => setIsCreateTaskOpen(true)}
+              canEdit={canEdit}
             />
           )}
         </div>
       </div>
 
-      <AddMembers projectId={projectId} userId={user.userId} token={token}/>
+      <AddMembers
+        projectId={projectId}
+        userId={user.userId}
+        token={token}
+        members={members}
+        setMembers={setMembers}
+        membersLoading={membersLoading}
+        canEdit={canEdit}
+        isOwner={currentUserRole === "OWNER"}
+      />
 
       {isCreateTaskOpen && (
         <CreateTaskModal
@@ -130,14 +159,15 @@ const SingleProject = () => {
         />
       )}
 
-      <div className="flex flex-col-reverse gap-3 border-t border-gray-200 pt-5 sm:flex-row sm:justify-end">
-        <button
-          type="button"
-          onClick={() => setDeleteProjectModal(true)}
-          className="rounded-xl border border-black-200 px-5 py-3 text-sm font-semibold text-red-700 transition hover:bg-gray-100"
-        >
-          Delete Project
-        </button>
+      {currentUserRole === "OWNER" && (
+        <div className="flex flex-col-reverse gap-3 border-t border-gray-200 pt-5 sm:flex-row sm:justify-end">
+          <button
+            type="button"
+            onClick={() => setDeleteProjectModal(true)}
+            className="rounded-xl border border-black-200 px-5 py-3 text-sm font-semibold text-red-700 transition hover:bg-gray-100"
+          >
+            Delete Project
+          </button>
           <ConfirmModal
             isOpen={deleteProjectModal}
             setIsOpen={setDeleteProjectModal}
@@ -145,7 +175,8 @@ const SingleProject = () => {
             itemName="Are you sure you want to delete this project?"
             buttonName="Delete"
           />
-      </div>
+        </div>
+      )}
     </div>
   );
 };

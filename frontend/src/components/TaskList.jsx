@@ -1,6 +1,6 @@
 import { capitalizeName } from "../utils/formatters";
 
-const TaskList = ({ tasks, onCreateTask }) => {
+const TaskList = ({ tasks, onCreateTask, canEdit }) => {
   return (
     <div className="rounded-2xl border border-gray-200 bg-white shadow-sm">
       <div className="flex items-center justify-between border-b border-gray-200 px-6 py-5">
@@ -9,13 +9,15 @@ const TaskList = ({ tasks, onCreateTask }) => {
           <p className="mt-1 text-sm text-gray-500">All tasks for this project.</p>
         </div>
 
-        <button
-          type="button"
-          onClick={onCreateTask}
-          className="rounded-xl bg-gray-900 px-4 py-2 text-sm fond-semibold text-white transition hover:bg-gray-700"
-        >
-          Add Task
-        </button>
+        {canEdit && (
+          <button
+            type="button"
+            onClick={onCreateTask}
+            className="rounded-xl bg-gray-900 px-4 py-2 text-sm fond-semibold text-white transition hover:bg-gray-700"
+          >
+            Add Task
+          </button>
+        )}
       </div>
 
       {tasks.length === 0 ? (
