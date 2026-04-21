@@ -1,5 +1,5 @@
-import { useEffect, useState } from "react";
-import { getMembers, addMember, removeMember, editMembership } from "../api/projectMemberApi";
+import { useState } from "react";
+import { addMember, removeMember, editMembership } from "../api/projectMemberApi";
 import { capitalizeName } from "../utils/formatters";
 import ConfirmModal from "./ConfirmModal";
 import EditMemberModal from "./EditMemberModal";
@@ -12,10 +12,8 @@ const initialFormData = {
 const inputClassName =
   "mt-2 w-full rounded-xl border border-gray-200 bg-white px-4 py-3 text-sm text-gray-900 shadow-sm outline-none transition focus:border-gray-400 focus:ring-2 focus:ring-gray-200";
 
-const AddMembers = ({ projectId, userId, token }) => {
+const AddMembers = ({ projectId, userId, token, members, setMembers, membersLoading, canEdit, isOwner }) => {
 
-  const [members, setMembers] = useState([]);
-  const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
   const [addMemberError, setAddMemberError] = useState(null);
   const [formData, setFormData]  = useState(initialFormData);
@@ -29,21 +27,6 @@ const AddMembers = ({ projectId, userId, token }) => {
       [name]: value,
     }));
   };
-
-  useEffect(() => {
-    const fetchMembers = async () => {
-      try {
-        const data = await getMembers(projectId, token);
-        setMembers(data);
-      } catch(e) {
-        setError(e.message);
-      } finally {
-        setLoading(false);
-      } 
-    };
-
-    fetchMembers();
-  }, [projectId, token]);
 
   const handleAddMember = async () => {
     try {
@@ -77,7 +60,7 @@ const AddMembers = ({ projectId, userId, token }) => {
     }
   };
 
-  if (loading) {
+  if (membersLoading) {
     return <p className="text-gray-500">Loading project members...</p>;
   }
 
@@ -127,21 +110,25 @@ const AddMembers = ({ projectId, userId, token }) => {
               </div>
             </div>
 
-            {member.role === "OWNER" ? null : (
+            {member.role !== "OWNER" && (
               <div className="flex flex-col gap-2">
-                <button
-                  type="button"
-                  onClick={() => setMemberToEdit(member.userId)}
-                  className="rounded-xl border border-gray-200 px-4 py-3 text-sm font-semibold text-gray-600 transition hover:bg-red-50"
-                >
-                  Edit
-                </button>
-                  <EditMemberModal
-                    isOpen={memberToEdit === member.userId}
-                    setIsOpen={setMemberToEdit}
-                    onConfirm={() => handleEditMembership(member.userId, member.role)}
-                    member={member}
-                  />
+                {isOwner && (
+                  <>
+                    <button
+                      type="button"
+                      onClick={() => setMemberToEdit(member.userId)}
+                      className="rounded-xl border border-gray-200 px-4 py-3 text-sm font-semibold text-gray-600 transition hover:bg-red-50"
+                    >
+                      Edit
+                    </button>
+                    <EditMemberModal
+                      isOpen={memberToEdit === member.userId}
+                      setIsOpen={setMemberToEdit}
+                      onConfirm={() => handleEditMembership(member.userId, member.role)}
+                      member={member}
+                    />
+                  </>
+                )}
                 <button
                   type="button"
                   onClick={() => setMemberToRemove(member.userId)}
@@ -149,16 +136,15 @@ const AddMembers = ({ projectId, userId, token }) => {
                 >
                   Remove
                 </button>
-                  <ConfirmModal
-                    isOpen={memberToRemove === member.userId}
-                    setIsOpen={setMemberToRemove}
-                    onConfirm={() => handleRemoveMember(member.userId)}
-                    itemName="Are you sure you want to remove this member from the project?"
-                    buttonName="Remove"
-                  />
+                <ConfirmModal
+                  isOpen={memberToRemove === member.userId}
+                  setIsOpen={setMemberToRemove}
+                  onConfirm={() => handleRemoveMember(member.userId)}
+                  itemName="Are you sure you want to remove this member from the project?"
+                  buttonName="Remove"
+                />
               </div>
-            )
-  }
+            )}
           </div>
         ))}
       </div>
@@ -172,33 +158,35 @@ const AddMembers = ({ projectId, userId, token }) => {
         <p className="mt-1 text-sm text-gray-500">People with access to this project.</p>
       </div>
       {membersContent}
-      <div className="border-t border-gray-200 px-6 py-5">
-        <input
-          type="email"
-          name="email"
-          value={formData.email}
-          onChange={handleChange}
-          placeholder="Enter email address"
-          className={inputClassName}
-        />
-        <select
-          name="role"
-          value={formData.role}
-          onChange={handleChange}
-          className={inputClassName}
-        >
-          <option value="VIEWER">Viewer</option>
-          <option value="EDITOR">Editor</option>
-        </select>
-        {addMemberError && <p className="text-red-500 text-sm">{addMemberError}</p>}
-        <button
-          type="button"
-          onClick={handleAddMember}
-          className={inputClassName}
-        >
-          Add Member
-        </button>
-      </div>
+      {canEdit && (
+        <div className="border-t border-gray-200 px-6 py-5">
+          <input
+            type="email"
+            name="email"
+            value={formData.email}
+            onChange={handleChange}
+            placeholder="Enter email address"
+            className={inputClassName}
+          />
+          <select
+            name="role"
+            value={formData.role}
+            onChange={handleChange}
+            className={inputClassName}
+          >
+            <option value="VIEWER">Viewer</option>
+            <option value="EDITOR">Editor</option>
+          </select>
+          {addMemberError && <p className="text-red-500 text-sm">{addMemberError}</p>}
+          <button
+            type="button"
+            onClick={handleAddMember}
+            className={inputClassName}
+          >
+            Add Member
+          </button>
+        </div>
+      )}
     </div>
   );
 };
