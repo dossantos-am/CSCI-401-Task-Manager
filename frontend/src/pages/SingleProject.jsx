@@ -8,7 +8,9 @@ import ProjectInfo from "../components/ProjectInfo";
 import TaskList from "../components/TaskList";
 import AddMembers from "../components/AddMembers";
 import CreateTaskModal from "../components/CreateTaskModal";
+import EditTaskModal from "../components/EditTaskModal";
 import ConfirmModal from "../components/ConfirmModal";
+import { capitalizeName } from "../utils/formatters";
 
 const SingleProject = () => {
   const { projectId } = useParams();
@@ -24,6 +26,7 @@ const SingleProject = () => {
   const [members, setMembers] = useState([]);
   const [membersLoading, setMembersLoading] = useState(true);
   const [isCreateTaskOpen, setIsCreateTaskOpen] = useState(false);
+  const [editingTask, setEditingTask] = useState(null);
   const [deleteProjectModal, setDeleteProjectModal] = useState(false);
 
   const currentUserRole = members.find((m) => m.userId === user.userId)?.role;
@@ -113,7 +116,7 @@ const SingleProject = () => {
         Back to Projects
       </button>
 
-      <h1 className="text-3xl font-bold">{project.name}</h1>
+      <h1 className="text-3xl font-bold">{capitalizeName(project.name)}</h1>
 
       <div className="grid gap-6 lg:grid-cols-[1fr_2fr]">
         <ProjectInfo
@@ -132,6 +135,7 @@ const SingleProject = () => {
             <TaskList
               tasks={tasks}
               onCreateTask={() => setIsCreateTaskOpen(true)}
+              onEditTask={(task) => setEditingTask(task)}
               canEdit={canEdit}
             />
           )}
@@ -155,6 +159,19 @@ const SingleProject = () => {
           onClose={() => setIsCreateTaskOpen(false)}
           onTaskCreated={(newTask) => {
             setTasks((currentTasks) => [newTask, ...currentTasks]);
+          }}
+        />
+      )}
+
+      {editingTask && (
+        <EditTaskModal
+          task={editingTask}
+          projectId={projectId}
+          onClose={() => setEditingTask(null)}
+          onTaskUpdated={(updated) => {
+            setTasks((currentTasks) =>
+              currentTasks.map((t) => (t.taskId === updated.taskId ? updated : t))
+            );
           }}
         />
       )}

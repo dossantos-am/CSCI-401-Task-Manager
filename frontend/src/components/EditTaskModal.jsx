@@ -1,32 +1,27 @@
 import { useContext, useState, useEffect } from "react";
 import { AuthContext } from "../context/AuthContext";
-import { assignTask, createTask } from "../api/taskApi";
-import { getMembers } from  "../api/projectMemberApi";
+import { updateTask, assignTask } from "../api/taskApi";
+import { getMembers } from "../api/projectMemberApi";
 import { capitalizeName } from "../utils/formatters";
-
-const initialFormData = {
-    title: "",
-    description: "",
-    status: "TODO",
-    dueDate: "",
-    assignedTo: "",
-};
 
 const inputClassName =
     "mt-2 w-full rounded-xl border border-gray-200 bg-white px-4 py-3 text-sm text-gray-900 shadow-sm outline-none transition focus:border-gray-400 focus:ring-2 focus:ring-gray-200";
 
-const CreateTaskModal = ({ projectId, onClose, onTaskCreated }) => {
+const EditTaskModal = ({ task, projectId, onClose, onTaskUpdated }) => {
     const { token } = useContext(AuthContext);
-    const [formData, setFormData] = useState(initialFormData);
+    const [formData, setFormData] = useState({
+        title: task.title || "",
+        description: task.description || "",
+        status: task.status || "TODO",
+        dueDate: task.dueDate || "",
+        assignedTo: "",
+    });
     const [error, setError] = useState(null);
     const [members, setMembers] = useState([]);
 
     const handleChange = (event) => {
         const { name, value } = event.target;
-        setFormData((currentData) => ({
-            ...currentData,
-            [name]: value,
-        }));
+        setFormData((current) => ({ ...current, [name]: value }));
     };
 
     const handleSubmit = async (event) => {
@@ -41,16 +36,13 @@ const CreateTaskModal = ({ projectId, onClose, onTaskCreated }) => {
                 dueDate: formData.dueDate || null,
             };
 
-            const newTask = await createTask(projectId, token, payload);
-            console.log("assignedTo:", formData.assignedTo);
-            if(formData.assignedTo != "") {
-                const assignedTask = await assignTask(newTask.taskId, formData.assignedTo, token);
-                onTaskCreated(assignedTask)
-            }
-            else {
-                onTaskCreated(newTask);
+            let updated = await updateTask(task.taskId, token, payload);
+
+            if (formData.assignedTo !== "") {
+                updated = await assignTask(updated.taskId, formData.assignedTo, token);
             }
 
+            onTaskUpdated(updated);
             onClose();
         } catch (e) {
             setError(e.message);
@@ -58,16 +50,16 @@ const CreateTaskModal = ({ projectId, onClose, onTaskCreated }) => {
     };
 
     useEffect(() => {
-    const fetchMembers = async () => {
-        try {
-        const data = await getMembers(projectId, token);
-        setMembers(data);
-        } catch(e) {
-        setError(e.message);
-        }
-    };
+        const fetchMembers = async () => {
+            try {
+                const data = await getMembers(projectId, token);
+                setMembers(data);
+            } catch (e) {
+                setError(e.message);
+            }
+        };
 
-    fetchMembers();
+        fetchMembers();
     }, [projectId, token]);
 
     return (
@@ -75,9 +67,9 @@ const CreateTaskModal = ({ projectId, onClose, onTaskCreated }) => {
             <div className="w-full max-w-xl rounded-2xl bg-white shadow-2xl ring-1 ring-gray-200">
                 <div className="flex items-start justify-between gap-4 border-b border-gray-200 px-6 py-5">
                     <div>
-                        <h2 className="text-2xl fond-bold text-gray-900">Create Task</h2>
+                        <h2 className="text-2xl font-bold text-gray-900">Edit Task</h2>
                         <p className="mt-1 text-sm text-gray-500">
-                            Add a new task to this project.
+                            Update the details for "{capitalizeName(task.title)}".
                         </p>
                     </div>
 
@@ -85,7 +77,7 @@ const CreateTaskModal = ({ projectId, onClose, onTaskCreated }) => {
                         type="button"
                         onClick={onClose}
                         className="flex h-10 w-10 items-center justify-center rounded-full text-xl text-gray-500 transition hover:bg-gray-100 hover:text-gray-700"
-                        aria-label="Close create task form"
+                        aria-label="Close edit task form"
                     >
                         &times;
                     </button>
@@ -102,7 +94,7 @@ const CreateTaskModal = ({ projectId, onClose, onTaskCreated }) => {
                             className={inputClassName}
                             placeholder="Enter task title"
                             required
-                        />                        
+                        />
                     </label>
 
                     <label className="block text-sm font-semibold text-gray-700">
@@ -144,16 +136,18 @@ const CreateTaskModal = ({ projectId, onClose, onTaskCreated }) => {
                     </div>
 
                     <label className="block text-sm font-semibold text-gray-700">
-                        Add Members
+                        Reassign To
                         <select
                             name="assignedTo"
                             value={formData.assignedTo}
                             onChange={handleChange}
                             className={inputClassName}
                         >
-                            <option key="defualt" value="">Select a member</option>
+                            <option value="">Keep current assignment</option>
                             {members.map((member) => (
-                                <option key={member.email} value={member.email}>{member.firstName} {member.lastName}</option>
+                                <option key={member.email} value={member.email}>
+                                    {member.firstName} {member.lastName}
+                                </option>
                             ))}
                         </select>
                     </label>
@@ -173,7 +167,7 @@ const CreateTaskModal = ({ projectId, onClose, onTaskCreated }) => {
                             type="submit"
                             className="rounded-xl bg-gray-900 px-5 py-3 text-sm font-semibold text-white transition hover:bg-gray-700"
                         >
-                            Create Task
+                            Save Changes
                         </button>
                     </div>
                 </form>
@@ -182,4 +176,4 @@ const CreateTaskModal = ({ projectId, onClose, onTaskCreated }) => {
     );
 };
 
-export default CreateTaskModal;
+export default EditTaskModal;
