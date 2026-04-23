@@ -26,7 +26,6 @@ public class UpdateTaskRequest {
     @NotNull
     private TaskStatus status;
 
-    @NotNull
     private LocalDate dueDate;
 
     @NotNull

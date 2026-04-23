@@ -17,15 +17,19 @@ const EditTaskModal = ({ task, projectId, onClose, onTaskUpdated }) => {
         assignedTo: "",
     });
     const [error, setError] = useState(null);
+    const [saving, setSaving] = useState(false);
+    const [saved, setSaved] = useState(false);
     const [members, setMembers] = useState([]);
 
     const handleChange = (event) => {
         const { name, value } = event.target;
         setFormData((current) => ({ ...current, [name]: value }));
+        setSaved(false);
     };
 
     const handleSubmit = async (event) => {
         event.preventDefault();
+        setSaving(true);
         setError(null);
 
         try {
@@ -34,6 +38,7 @@ const EditTaskModal = ({ task, projectId, onClose, onTaskUpdated }) => {
                 description: formData.description,
                 status: formData.status,
                 dueDate: formData.dueDate || null,
+                assignedToUserId: task.assignedToUserId,
             };
 
             let updated = await updateTask(task.taskId, token, payload);
@@ -42,10 +47,12 @@ const EditTaskModal = ({ task, projectId, onClose, onTaskUpdated }) => {
                 updated = await assignTask(updated.taskId, formData.assignedTo, token);
             }
 
+            setSaved(true);
             onTaskUpdated(updated);
-            onClose();
         } catch (e) {
             setError(e.message);
+        } finally {
+            setSaving(false);
         }
     };
 
@@ -153,6 +160,7 @@ const EditTaskModal = ({ task, projectId, onClose, onTaskUpdated }) => {
                     </label>
 
                     {error && <p className="text-sm text-red-500">{error}</p>}
+                    {saved && <p className="text-sm text-green-600">Changes saved.</p>}
 
                     <div className="flex flex-col-reverse gap-3 border-t border-gray-200 pt-5 sm:flex-row sm:justify-end">
                         <button
@@ -165,9 +173,10 @@ const EditTaskModal = ({ task, projectId, onClose, onTaskUpdated }) => {
 
                         <button
                             type="submit"
-                            className="rounded-xl bg-gray-900 px-5 py-3 text-sm font-semibold text-white transition hover:bg-gray-700"
+                            disabled={saving}
+                            className="rounded-xl bg-gray-900 px-5 py-3 text-sm font-semibold text-white transition hover:bg-gray-700 disabled:opacity-60"
                         >
-                            Save Changes
+                            {saving ? "Saving…" : "Save Changes"}
                         </button>
                     </div>
                 </form>
