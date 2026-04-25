@@ -171,7 +171,7 @@ const CreateProjectModal = ({ onClose, onProjectCreated }) => {
               {formData.members.map((member, index) => (
                 <div
                   key={index}
-                  className="grid gap-3 rounded-xl border border-gray-200 p-3 sm:grid-cols-[1fr_160px_auto]"
+                  className="items-center grid gap-3 rounded-xl border border-gray-200 p-3 sm:grid-cols-[1fr_160px_auto]"
                 >
                   <input
                     type="email"
@@ -197,9 +197,12 @@ const CreateProjectModal = ({ onClose, onProjectCreated }) => {
                   <button
                     type="button"
                     onClick={() => removeMember(index)}
-                    className="rounded-xl border border-red-200 px-4 py-3 text-sm font-semibold text-red-600 transition hover:bg-red-50"
+                    className="flex h-10 w-10 items-center justify-center rounded-lg text-red-600 transition hover:bg-gray-100 hover:text-gray-700"
+                    aria-label="Remove project member"
                   >
-                    Remove
+                    <svg className="h-4 w-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16" />
+                    </svg>
                   </button>
                 </div>
               ))}
