@@ -111,15 +111,18 @@ const AddMembers = ({ projectId, userId, token, members, setMembers, membersLoad
             </div>
 
             {member.role !== "OWNER" && (
-              <div className="flex flex-col gap-2">
+              <div className="items-end flex flex-col gap-2">
                 {isOwner && (
                   <>
                     <button
                       type="button"
                       onClick={() => setMemberToEdit(member.userId)}
-                      className="rounded-xl border border-gray-200 px-4 py-3 text-sm font-semibold text-gray-600 transition hover:bg-red-50"
+                      className="flex h-10 w-10 items-center justify-center rounded-lg text-gray-600 transition hover:bg-gray-100 hover:text-gray-700"
+                      aria-label="Edit membership"
                     >
-                      Edit
+                      <svg className="h-6 w-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15.232 5.232l3.536 3.536M9 13l6.586-6.586a2 2 0 012.828 2.828L11.828 15.828a2 2 0 01-1.414.586H9v-2a2 2 0 01.586-1.414z" />
+                      </svg>
                     </button>
                     <EditMemberModal
                       isOpen={memberToEdit === member.userId}
@@ -132,9 +135,12 @@ const AddMembers = ({ projectId, userId, token, members, setMembers, membersLoad
                 <button
                   type="button"
                   onClick={() => setMemberToRemove(member.userId)}
-                  className="rounded-xl border border-red-200 px-4 py-3 text-sm font-semibold text-red-600 transition hover:bg-red-50"
+                  className="flex h-10 w-10 items-center justify-center rounded-lg text-red-600 transition hover:bg-gray-100 hover:text-gray-700"
+                  aria-label="Remove project member"
                 >
-                  Remove
+                  <svg className="h-4 w-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16" />
+                  </svg>
                 </button>
                 <ConfirmModal
                   isOpen={memberToRemove === member.userId}
