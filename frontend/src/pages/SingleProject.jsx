@@ -1,7 +1,7 @@
 import { useContext, useEffect, useState } from "react";
 import { useParams, useNavigate } from "react-router-dom";
 import { AuthContext } from "../context/AuthContext";
-import { getTasksByProjectId } from "../api/taskApi";
+import { getTasksByProjectId, deleteTask } from "../api/taskApi";
 import { getProjectByProjectId, deleteProject } from "../api/projectApi";
 import { getMembers } from "../api/projectMemberApi";
 import ProjectInfo from "../components/ProjectInfo";
@@ -28,6 +28,7 @@ const SingleProject = () => {
   const [isCreateTaskOpen, setIsCreateTaskOpen] = useState(false);
   const [editingTask, setEditingTask] = useState(null);
   const [deleteProjectModal, setDeleteProjectModal] = useState(false);
+  const [taskToDelete, setTaskToDelete] = useState(null);
 
   const currentUserRole = members.find((m) => m.userId === user.userId)?.role;
   const canEdit = currentUserRole === "EDITOR" || currentUserRole === "OWNER";
@@ -85,6 +86,15 @@ const SingleProject = () => {
       }
     };
 
+  const handleDeleteTask = async () => {
+    try{
+      await deleteTask(taskToDelete.taskId, token);
+      setTasks((tasks) => tasks.filter((task) => task.taskId !== taskToDelete.taskId));
+    } catch(e) {
+      setError(e.message);
+    }
+  };
+
   if (loading) {
     return <p className="text-gray-500">Loading project...</p>;
   }
@@ -132,12 +142,22 @@ const SingleProject = () => {
           ) : taskError ? (
             <p className="text-red-500">{taskError}</p>
           ) : (
-            <TaskList
-              tasks={tasks}
-              onCreateTask={() => setIsCreateTaskOpen(true)}
-              onEditTask={(task) => setEditingTask(task)}
-              canEdit={canEdit}
-            />
+            <>
+              <TaskList
+                tasks={tasks}
+                onCreateTask={() => setIsCreateTaskOpen(true)}
+                onEditTask={(task) => setEditingTask(task)}
+                onTaskToDelete={(task) => setTaskToDelete(task)}
+                canEdit={canEdit}
+              />
+                <ConfirmModal
+                  isOpen={taskToDelete !== null}
+                  setIsOpen={() => setTaskToDelete(null)}
+                  onConfirm={handleDeleteTask}
+                  itemName="Are you sure you want to delete this task?"
+                  buttonName="Delete"
+                />
+            </>
           )}
         </div>
       </div>
