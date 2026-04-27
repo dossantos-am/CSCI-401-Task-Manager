@@ -1,6 +1,7 @@
 import { useContext, useState } from "react";
 import { AuthContext } from "../context/AuthContext";
 import { createProject } from "../api/projectApi";
+import SlideAnimation from "../utils/AnimatedContent";
 
 const initialFormData = {
   name: "",
@@ -77,8 +78,10 @@ const CreateProjectModal = ({ onClose, onProjectCreated }) => {
   };
 
   return (
-    <div className="fixed inset-0 z-50 flex min-h-screen items-center justify-center overflow-y-auto bg-gray-950/35 p-4 backdrop-blur-sm sm:p-6">
-      <div className="w-full max-w-2xl rounded-2xl bg-white shadow-2xl ring-1 ring-gray-200">
+    
+    <div className="fixed inset-0 z-50 flex min-h-screen items-center justify-center  bg-gray-950/35 p-4 backdrop-blur-sm sm:p-6">
+      <SlideAnimation>
+      <div className="w-full max-w-2xl rounded-2xl bg-white shadow-2xl ring-1 ring-gray-200 overflow-y-auto">
         <div className="flex items-start justify-between gap-4 border-b border-gray-200 px-6 py-5">
           <div>
             <h2 className="text-2xl font-bold text-gray-900">Create Project</h2>
@@ -229,7 +232,9 @@ const CreateProjectModal = ({ onClose, onProjectCreated }) => {
           </div>
         </form>
       </div>
+      </SlideAnimation>
     </div>
+    
   );
 };
 

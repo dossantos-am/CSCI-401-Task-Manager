@@ -3,6 +3,7 @@ import { AuthContext } from "../context/AuthContext";
 import { updateTask, assignTask } from "../api/taskApi";
 import { getMembers } from "../api/projectMemberApi";
 import { capitalizeName } from "../utils/formatters";
+import SlideAnimation from "../utils/AnimatedContent";
 
 const inputClassName =
     "mt-2 w-full rounded-xl border border-gray-200 bg-white px-4 py-3 text-sm text-gray-900 shadow-sm outline-none transition focus:border-gray-400 focus:ring-2 focus:ring-gray-200";
@@ -70,8 +71,9 @@ const EditTaskModal = ({ task, projectId, onClose, onTaskUpdated }) => {
     }, [projectId, token]);
 
     return (
-        <div className="fixed inset-0 z-50 flex min-h-screen items-center justify-center overflow-y-auto bg-gray-950/35 p-4 backdrop-blur-sm sm:p-6">
-            <div className="w-full max-w-xl rounded-2xl bg-white shadow-2xl ring-1 ring-gray-200">
+        <div className="fixed inset-0 z-50 flex min-h-screen items-center justify-center  bg-gray-950/35 p-4 backdrop-blur-sm sm:p-6">
+            <SlideAnimation>
+            <div className="w-full max-w-xl rounded-2xl bg-white shadow-2xl ring-1 ring-gray-200 overflow-y-auto">
                 <div className="flex items-start justify-between gap-4 border-b border-gray-200 px-6 py-5">
                     <div>
                         <h2 className="text-2xl font-bold text-gray-900">Edit Task</h2>
@@ -181,6 +183,7 @@ const EditTaskModal = ({ task, projectId, onClose, onTaskUpdated }) => {
                     </div>
                 </form>
             </div>
+            </SlideAnimation>
         </div>
     );
 };
