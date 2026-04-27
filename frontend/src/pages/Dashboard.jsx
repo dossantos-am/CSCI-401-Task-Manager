@@ -52,7 +52,7 @@ const Dashboard = () => {
           <h1 className="text-2xl font-bold">
             Welcome to your Dashboard {capitalizeName(user.firstName)}!
           </h1>
-
+          
           <button
             type="button"
             onClick={() => setIsCreateProjectOpen(true)}
@@ -60,6 +60,8 @@ const Dashboard = () => {
           >
             Add Project
           </button>
+          
+
         </div>
 
         <SummaryBoxes projects={projects} />
@@ -122,14 +124,14 @@ const Dashboard = () => {
         </section>
         
       </div>
-
+      
       {isCreateProjectOpen ? (
         <CreateProjectModal
           onClose={() => setIsCreateProjectOpen(false)}
           onProjectCreated={handleProjectCreated}
         />
       ) : null}
-
+      
       {showSuccessToast ? (
         <SuccessToast
           message="Project created successfully"
