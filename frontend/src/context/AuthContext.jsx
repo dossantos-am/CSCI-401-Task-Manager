@@ -49,7 +49,7 @@ export function AuthProvider({ children }) {
   };
 
   const register = async (firstName, lastName, email, password) => {
-    const response = await fetch(`${apiRealUrl}/api/auth/register`, {
+    const response = await fetch(`${apiBaseUrl}/api/auth/register`, {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
