@@ -6,6 +6,7 @@ import { getProjects } from "../api/projectApi"
 import CreateProjectModal from "../components/CreateProjectModal";
 import SuccessToast from "../components/SuccessToast";
 import { useSearchParams } from "react-router-dom";
+import { motion } from 'motion/react';
 
 const Projects = () => {
   const { token } = useContext(AuthContext);
@@ -74,9 +75,14 @@ const Projects = () => {
           <p>No projects match "{searchQuery}".</p>
         ) : (
           <div className="space-y-3">
-            {filteredProjects.map((project) => (
+            {filteredProjects.map((project, index) => (
+              <motion.div
+              key={project.projectId}
+              initial={{ scale: 0.7, opacity: 0 }}
+              animate={{ scale: 1, opacity: 1 }}
+              transition={{ duration: 0.2, delay: index * 0.05 }}>
               <button
-                key={project.projectId}
+                
                 type="button"
                 onClick={() => navigate(`/projects/${project.projectId}`)}
                 className="w-full rounded-lg border p-4 text-left hover:bg-gray-200"
@@ -90,6 +96,7 @@ const Projects = () => {
                   <p>Due: {project.dueDate}</p>
                 </div>
               </button>
+              </motion.div>
             ))}
           </div>
         )}
