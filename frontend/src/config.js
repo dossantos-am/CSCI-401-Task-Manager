@@ -1,2 +1,1 @@
-export const apiBaseUrl = import.meta.env.VITE_API_BASE_URL ?? "https://csci-401-task-manager-production.up.railway.app";
-export const apiRealUrl = import.meta.env.VITE_API_BASE_URL ?? "https://project-manager-beta-ten.vercel.app"
+export const apiBaseUrl = import.meta.env.VITE_API_BASE_URL ?? "https://localhost:8080";
