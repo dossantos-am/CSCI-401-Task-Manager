@@ -9,9 +9,6 @@ const initialFormData = {
   email: ""
 };
 
-const inputClassName =
-  "mt-2 w-full rounded-xl border border-gray-200 bg-white px-4 py-3 text-sm text-gray-900 shadow-sm outline-none transition focus:border-gray-400 focus:ring-2 focus:ring-gray-200";
-
 const AddMembers = ({ projectId, userId, token, members, setMembers, membersLoading, canEdit, isOwner }) => {
 
   const [error, setError] = useState(null);
@@ -166,31 +163,33 @@ const AddMembers = ({ projectId, userId, token, members, setMembers, membersLoad
       {membersContent}
       {canEdit && (
         <div className="border-t border-gray-200 px-6 py-5">
-          <input
-            type="email"
-            name="email"
-            value={formData.email}
-            onChange={handleChange}
-            placeholder="Enter email address"
-            className={inputClassName}
-          />
-          <select
-            name="role"
-            value={formData.role}
-            onChange={handleChange}
-            className={inputClassName}
-          >
-            <option value="VIEWER">Viewer</option>
-            <option value="EDITOR">Editor</option>
-          </select>
+          <div className="flex gap-2">
+            <input
+              type="email"
+              name="email"
+              value={formData.email}
+              onChange={handleChange}
+              placeholder="Enter email address"
+              className="flex-1 rounded-xl border border-gray-200 bg-white px-4 py-3 text-sm text-gray-900 shadow-sm outline-none transition focus:border-gray-400 focus:ring-2 focus:ring-gray-200"
+            />
+            <select
+              name="role"
+              value={formData.role}
+              onChange={handleChange}
+              className="w-32 rounded-xl border border-gray-200 bg-white px-4 py-3 text-sm text-gray-900 shadow-sm outline-none transition focus:border-gray-400 focus:ring-2 focus:ring-gray-200"
+            >
+              <option value="VIEWER">Viewer</option>
+              <option value="EDITOR">Editor</option>
+            </select>
+            <button
+              type="button"
+              onClick={handleAddMember}
+              className="shrink-0 rounded-xl bg-blue-600 px-5 py-3 text-sm font-semibold text-white transition hover:bg-blue-700"
+            >
+              Add Member
+            </button>
+          </div>
           {addMemberError && <p className="text-red-500 text-sm">{addMemberError}</p>}
-          <button
-            type="button"
-            onClick={handleAddMember}
-            className={inputClassName}
-          >
-            Add Member
-          </button>
         </div>
       )}
     </div>
