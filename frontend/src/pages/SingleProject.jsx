@@ -128,7 +128,7 @@ const SingleProject = () => {
 
       <h1 className="text-3xl font-bold">{capitalizeName(project.name)}</h1>
 
-      <div className="grid gap-6 lg:grid-cols-[1fr_2fr]">
+      <div className="grid gap-6 lg:grid-cols-[1fr_2fr] max-w-6xl mx-auto w-full">
         <ProjectInfo
           project={project}
           onProjectUpdated={(updated) => setProject(updated)}
