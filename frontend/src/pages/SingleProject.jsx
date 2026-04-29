@@ -104,7 +104,7 @@ const SingleProject = () => {
   }
 
   return (
-    <div className="space-y-4">
+    <div className="max-w-6xl mx-auto space-y-4">
       <button
         type="button"
         onClick={() => navigate("/projects")}
@@ -128,7 +128,7 @@ const SingleProject = () => {
 
       <h1 className="text-3xl font-bold">{capitalizeName(project.name)}</h1>
 
-      <div className="grid gap-6 lg:grid-cols-[1fr_2fr] max-w-6xl mx-auto w-full">
+      <div className="grid gap-6 lg:grid-cols-[1fr_2fr]">
         <ProjectInfo
           project={project}
           onProjectUpdated={(updated) => setProject(updated)}

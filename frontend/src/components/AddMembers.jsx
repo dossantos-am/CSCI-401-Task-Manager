@@ -170,7 +170,7 @@ const AddMembers = ({ projectId, userId, token, members, setMembers, membersLoad
               value={formData.email}
               onChange={handleChange}
               placeholder="Enter email address"
-              className="flex-1 rounded-xl border border-gray-200 bg-white px-4 py-3 text-sm text-gray-900 shadow-sm outline-none transition focus:border-gray-400 focus:ring-2 focus:ring-gray-200"
+              className="flex-1 max-w-sm rounded-xl border border-gray-200 bg-white px-4 py-3 text-sm text-gray-900 shadow-sm outline-none transition focus:border-gray-400 focus:ring-2 focus:ring-gray-200"
             />
             <select
               name="role"
