@@ -163,7 +163,7 @@ const AddMembers = ({ projectId, userId, token, members, setMembers, membersLoad
       {membersContent}
       {canEdit && (
         <div className="border-t border-gray-200 px-6 py-5">
-          <div className="flex gap-2">
+          <div className="flex gap-2 justify-center">
             <input
               type="email"
               name="email"
