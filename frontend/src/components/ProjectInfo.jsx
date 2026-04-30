@@ -71,7 +71,7 @@ const ProjectInfo = ({ project, onProjectUpdated, canEdit }) => {
             name="description"
             value={formData.description}
             onChange={handleChange}
-            className={`${inputClassName} min-h-28 resize-y`}
+            className={`${inputClassName} min-h-28 max-h-64 resize-y overflow-y-auto`}
             placeholder="Describe the project"
           />
         </label>
