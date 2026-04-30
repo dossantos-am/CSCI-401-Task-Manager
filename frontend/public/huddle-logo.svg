@@ -1,0 +1,15 @@
+<svg width="500" height="500" viewBox="0 0 500 500" role="img" xmlns="http://www.w3.org/2000/svg">
+  <title>Huddle tab logo</title>
+  <desc>A rounded square app icon for Huddle project management tool, featuring interconnected person silhouettes forming a huddle shape on a deep indigo background.</desc>
+
+  <rect x="0" y="0" width="500" height="500" rx="110" fill="#3B3FD8"/>
+
+  <circle cx="250" cy="158" r="52" fill="white" opacity="0.95"/>
+  <path d="M130 340 C130 278 180 240 250 240 C320 240 370 278 370 340" fill="white" opacity="0.95"/>
+
+  <circle cx="120" cy="198" r="38" fill="white" opacity="0.72"/>
+  <path d="M22 340 C22 292 58 264 120 264 C150 264 175 275 192 292" fill="white" opacity="0.72"/>
+
+  <circle cx="380" cy="198" r="38" fill="white" opacity="0.72"/>
+  <path d="M478 340 C478 292 442 264 380 264 C350 264 325 275 308 292" fill="white" opacity="0.72"/>
+</svg>

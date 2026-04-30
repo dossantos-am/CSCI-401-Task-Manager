@@ -5,7 +5,7 @@ const Sidebar = () => {
     <div className="w-64 h-screen bg-gray-900 text-white flex flex-col p-6">
       
       <h1 className="text-2xl font-bold mb-10">
-        Project Manager
+        Huddle
       </h1>
       <hr className='border-gray-800 light:border-zinc-200' />
 
