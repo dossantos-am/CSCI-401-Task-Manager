@@ -1,8 +1,11 @@
+import SlideAnimation from "../utils/AnimatedContent";
+
 const ConfirmModal = ({ isOpen, setIsOpen, onConfirm, itemName, buttonName }) => {
     if(!isOpen) return null;
 
     return (
         <div className="fixed inset-0 backdrop-blur-xs flex items-center justify-center">
+            <SlideAnimation>
             <div className="bg-white border-solid border-2 border-black-500 rounded-xl px-6 py-6 flex flex-row gap-4 shadow-xl items-center">
                 <p className="text-md font-semibold">{itemName}</p>
                 <button 
@@ -21,6 +24,7 @@ const ConfirmModal = ({ isOpen, setIsOpen, onConfirm, itemName, buttonName }) =>
                     {buttonName}
                 </button>
             </div>
+            </SlideAnimation>
         </div>
     );
 };

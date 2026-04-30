@@ -1,3 +1,4 @@
+import SlideAnimation from "../utils/AnimatedContent";
 
 
 const EditMemberModal = ({ isOpen, setIsOpen, onConfirm, member }) => {
@@ -5,6 +6,7 @@ const EditMemberModal = ({ isOpen, setIsOpen, onConfirm, member }) => {
 
     return (
         <div className="fixed inset-0 backdrop-blur-xs flex items-center justify-center">
+            <SlideAnimation>
             <div className="bg-white border-solid border-2 border-black-500 rounded-xl px-6 py-6 flex flex-row gap-4 shadow-xl items-center">
                                                                                                                                     {/* If the current members role is editor, return viewer, 
                                                                                                                                         otherwise return editor*/}
@@ -25,6 +27,7 @@ const EditMemberModal = ({ isOpen, setIsOpen, onConfirm, member }) => {
                     Confirm
                 </button>
             </div>
+            </SlideAnimation>
         </div>
     );
 }
