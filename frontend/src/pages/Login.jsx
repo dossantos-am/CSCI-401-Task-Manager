@@ -34,6 +34,7 @@ const Login = () => {
         <p className="text-gray-500 text-center mb-8">
           Sign in to continue
         </p>
+        <img src="/huddle-logo.svg" alt="Huddle Logo" className="w-16 h-16 mx-auto mb-6" />
 
         <form className="space-y-5"
               onSubmit={handleSubmit}>
