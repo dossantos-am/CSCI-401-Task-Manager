@@ -5,7 +5,7 @@ import { updateProject } from "../api/projectApi";
 const inputClassName =
   "mt-2 w-full rounded-xl border border-gray-200 bg-white px-4 py-3 text-sm text-gray-900 shadow-sm outline-none transition focus:border-gray-400 focus:ring-2 focus:ring-gray-200";
 
-const STATUS_OPTIONS = ["ACTIVE", "COMPLETED", "ARCHIVED"];
+const STATUS_OPTIONS = ["ACTIVE", "COMPLETED"];
 
 const ProjectInfo = ({ project, onProjectUpdated, canEdit }) => {
   const { token } = useContext(AuthContext);
