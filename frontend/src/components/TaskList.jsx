@@ -2,7 +2,7 @@ import { capitalizeName } from "../utils/formatters";
 
 const TaskList = ({ tasks, onCreateTask, onEditTask, onTaskToDelete, canEdit }) => {
   return (
-    <div className="rounded-2xl border border-gray-200 bg-white shadow-sm h-full">
+    <div className="rounded-2xl border border-gray-200 bg-white shadow-sm h-full flex flex-col">
       <div className="flex items-center justify-between border-b border-gray-200 px-6 py-5">
         <div>
           <h2 className="text-xl fond-bold text-gray-900 font-bold">Tasks</h2>
@@ -40,7 +40,7 @@ const TaskList = ({ tasks, onCreateTask, onEditTask, onTaskToDelete, canEdit }) 
           <p className="text-sm font-medium text-gray-500">No tasks added</p>
         </div>
       ) : (
-        <div className="space-y-3 px-6 py-6 max-h-125 overflow-y-auto">
+        <div className="space-y-3 px-6 py-6 flex-1 overflow-y-auto">
           
           {tasks.map((task) => (
             
