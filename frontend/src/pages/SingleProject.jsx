@@ -135,7 +135,7 @@ const SingleProject = () => {
           canEdit={canEdit}
         />
 
-        <div className="space-y-3">
+        <div className="space-y-3 h-full">
           
           {taskLoading ? (
             <p className="text-gray-500">Loading tasks...</p>
